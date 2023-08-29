@@ -1,0 +1,49 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: networking
+  namespace: networking
+spec:
+    insecureSkipVerify: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: networking
+  namespace: networking
+spec:
+  entryPoints:
+    - web
+    - websecure
+  tls:
+    secretName: "${SECRET_DOMAIN/./-}-production-tls"
+  routes:
+    - match: "Host(`pihole-1.${SECRET_DOMAIN}`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: pihole-1-web
+          namespace: infra
+          port: 80
+    - match: "Host(`pihole-2.${SECRET_DOMAIN}`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: pihole-2-web
+          namespace: infra
+          port: 80
+    - match: "Host(`traefik.${SECRET_DOMAIN}`)"
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+    - match: "Host(`unify.${SECRET_DOMAIN}`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: unify-controller
+          namespace: networking
+          port: 8443
+          serversTransport: networking
+          scheme: https

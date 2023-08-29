@@ -1,0 +1,11 @@
+---
+apiVersion: hajimari.io/v1alpha1
+kind: Application
+metadata:
+  name: weave-gitops
+spec:
+  name: Weave GitOps
+  group: monitoring
+  icon: simple-icons:sawtooth-wave
+  url: https://flux.${SECRET_DOMAIN}
+  targetBlank: true

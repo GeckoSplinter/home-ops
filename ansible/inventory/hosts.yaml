@@ -1,0 +1,14 @@
+---
+kubernetes:
+  children:
+    master:
+      hosts:
+        k8s-bee-s1:
+          ansible_user: gecko
+          ansible_host: 192.168.42.33
+        k8s-mac-s2:
+          ansible_user: gecko
+          ansible_host: 192.168.42.34
+        k8s-min-s3:
+          ansible_user: gecko
+          ansible_host: 192.168.42.35
