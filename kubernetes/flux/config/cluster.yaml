@@ -8,7 +8,7 @@ spec:
   interval: 30m
   ref:
     branch: main
-    url: ssh://git@github.com/GeckoSplinter/home-ops
+  url: ssh://git@github.com/GeckoSplinter/home-ops
   secretRef:
     name: home-ops-git
   ignore: |
