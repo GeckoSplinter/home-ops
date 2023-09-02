@@ -2,6 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./angelnu.yaml
   - ./bitnami.yaml
   - ./bjw-s.yaml
   - ./cilium.yaml
@@ -14,7 +15,9 @@ resources:
   - ./jetstack.yaml
   - ./k8s-gateway.yaml
   - ./kubernetes-dashboard.yaml
+  - ./longhorn.yaml
   - ./metrics-server.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
+  - ./traefik.yaml
   - ./weave-gitops.yaml
