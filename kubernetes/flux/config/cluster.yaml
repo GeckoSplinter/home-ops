@@ -10,7 +10,7 @@ spec:
     branch: main
   url: ssh://git@github.com/GeckoSplinter/home-ops
   secretRef:
-    name: home-ops-git
+    name: github-deploy-key
   ignore: |
     # exclude all
     /*
