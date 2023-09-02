@@ -111,18 +111,6 @@ spec:
     kubeProxy:
       enabled: false # Disabled due to eBPF
     prometheus:
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          hajimari.io/appName: Prometheus
-          hajimari.io/icon: simple-icons:prometheus
-        pathType: Prefix
-        hosts:
-          - &host "prometheus.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - *host
       prometheusSpec:
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
