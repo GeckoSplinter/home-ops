@@ -1,0 +1,37 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: influxdb
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.bitnami.com/bitnami
+      chart: influxdb
+      version: 5.4.23
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  upgrade:
+    remediation:
+      retries: 3
+  rollback:
+    cleanupOnFail: true
+  values:
+    image:
+      repository: bitnami/influxdb
+      tag: 2.6.1
+    persistence:
+      enabled: true
+      existingClaim: influxdb
+    auth:
+      admin:
+        password: f37i6j48qtih3490egrj5isd
+        token: aDjt6Tw12FvQYwUGrVvm
+      user:
+        username: home-assistant
+        password: l91qu2unr7m759n8objb0g8q
+        bucket: home-assistant
