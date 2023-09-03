@@ -35,13 +35,46 @@ spec:
       enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: mosquitto
+    service:
+      main:
+        ports:
+          http:
+            enabled: false
+          mqtt:
+            enabled: true
+            port: 1883
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+    volumeClaimTemplates:
+      - name: config
+        mountPath: /data
+        accessMode: ReadWriteOnce
+        size: 512Mi
+        storageClass: longhorn
     persistence:
-      data:
+      config-file:
         enabled: true
-        existingClaim: mosquitto-config-v1
-      configinc:
+        type: configMap
+        name: mosquitto-configmap # overriden by kustomizeconfig
+        mountPath: /mosquitto/config/mosquitto.conf
+        subPath: mosquitto.conf
+      secret-file:
         enabled: true
-        type: custom
-        volumeSpec:
-          secret:
-            secretName: mosquitto
+        type: secret
+        name: mosquitto
+        subPath: mosquitto_pwd
+        mountPath: /data/mosquitto_secret/mosquitto_pwd
+        readOnly: true
+      external-config:
+        enabled: true
+        type: emptyDir
+        mountPath: /mosquitto/external_config
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        memory: 150Mi

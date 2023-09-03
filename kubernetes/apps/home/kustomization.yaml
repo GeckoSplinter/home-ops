@@ -6,3 +6,4 @@ resources:
   - ./home-assistant/ks.yaml
   - ./influxdb/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./node-red/ks.yaml
