@@ -25,6 +25,13 @@ spec:
           name: webhook-receiver
           namespace: flux-system
           port: 80
+    - match: "Host(`flux.${SECRET_DOMAIN}`) && PathPrefix(`/hook`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: webhook-receiver
+          namespace: flux-system
+          port: 80
     - match: "Host(`echo.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
