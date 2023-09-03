@@ -25,8 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: local-path-provisioner
-      namespace: kube-system
+    - name: longhorn
+      namespace: longhorn-system
   values:
     deploymentStrategy:
       type: Recreate
@@ -134,13 +134,6 @@ spec:
         kubernetes-pods:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
           datasource: Prometheus
-      nginx:
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
@@ -159,6 +152,6 @@ spec:
       enabled: true
     persistence:
       enabled: true
-      storageClassName: local-path
+      storageClassName: longhorn
     testFramework:
       enabled: false
