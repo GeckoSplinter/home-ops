@@ -602,3 +602,8 @@ The benefits of a public repository include:
 ## 🤝 Thanks
 
 Big shout out to all the contributors, sponsors and everyone else who has helped on this project.
+
+## Issues
+
+Macmini network card
+https://forums.debian.net/viewtopic.php?t=152621
