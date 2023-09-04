@@ -123,10 +123,10 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-path
+              storageClassName: longhorn
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 100Gi
     grafana:
       enabled: false
       forceDeployDashboards: true
