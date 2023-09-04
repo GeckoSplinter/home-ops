@@ -7,7 +7,7 @@ metadata:
 spec:
   entryPoints:
     - web
-    - web-secure
+    - websecure
   tls:
     secretName: "${SECRET_DOMAIN/./-}-production-tls"
   routes:
