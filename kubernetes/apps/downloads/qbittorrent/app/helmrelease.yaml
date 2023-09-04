@@ -66,15 +66,13 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups: [10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
     # Note: If downloading very large torrents it might be worth using NFS for your download directory.
     # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
     persistence:
+      config:
+        enabled: true
+        existingClaim: qbittorrent-config
+        mountPath: /config
       media:
         enabled: true
         type: nfs
