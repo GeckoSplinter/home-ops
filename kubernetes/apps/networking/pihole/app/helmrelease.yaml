@@ -1,0 +1,65 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pihole
+  namespace: infra
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: pihole
+      version: 2.12.0
+      sourceRef:
+        kind: HelmRepository
+        name: pihole
+        namespace: flux-system
+  upgrade:
+    remediation:
+      retries: 3
+  rollback:
+    cleanupOnFail: true
+  values:
+    image:
+      repository: "pihole/pihole"
+      tag: "2023.03.1"
+    virtualHost: pihole.${SECRET_DOMAIN}
+    serviceDns:
+      loadBalancerIP: 192.168.42.70
+      type: LoadBalancer
+      annotations:
+        io.cilium/lb-ipam-ips: "192.168.42.70"
+    serviceDhcp:
+      enabled: false
+    monitoring:
+      podMonitor:
+        enabled: true
+      sidecar:
+        enabled: true
+        image:
+          repository: ekofr/pihole-exporter
+          tag: v0.4.0
+
+    DNS1: 208.67.222.222
+    DNS2: 208.67.220.220
+    ftl:
+      RATE_LIMIT: 10000/60
+      BLOCK_ICLOUD_PR: false
+    dnsmasq:
+      additionalHostsEntries:
+        - 192.168.10.1      ccr2004
+
+    adlists:
+      - https://raw.githubusercontent.com/0Zinc/easylists-for-pihole/master/easyprivacy.txt
+      - https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/EasyList-Liste-FR.txt
+      - https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/EasyList.txt
+      - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+      - https://adaway.org/hosts.txt
+      - https://v.firebog.net/hosts/AdguardDNS.txt
+      - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+      - https://v.firebog.net/hosts/Prigent-Ads.txt
+      - https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+      - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+      - https://v.firebog.net/hosts/static/w3kbl.txt
+      - https://phishing.army/download/phishing_army_blocklist_extended.txt
+      - https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
