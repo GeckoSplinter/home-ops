@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: config-qbittorrent
-  namespace: downloads
+  name: config-plex
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 20Gi
   storageClassName: longhorn
   volumeMode: Filesystem
-  volumeName: pvc-2b6dd897-7038-4fa3-b2ca-e415cd79dd00
+  volumeName: pvc-241b7c9b-329f-4864-9ab9-77228f2e7ca1

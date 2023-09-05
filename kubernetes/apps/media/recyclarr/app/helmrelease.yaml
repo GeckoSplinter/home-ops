@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: recyclarr
   namespace: media
 spec:
   interval: 30m
@@ -28,17 +28,23 @@ spec:
     controller:
       type: statefulset
     image:
-      repository: ghcr.io/sct/overseerr
-      tag: 1.33.2
+      repository: ghcr.io/recyclarr/recyclarr
+      tag: 5.2.1
     env:
       TZ: Europe/Paris
-      LOG_LEVEL: info
-      PORT: &port 80
+      SONARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: app-arr-secret
+            key: SONARR__API_KEY
+      RADARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: app-arr-secret
+            key: RADARR__API_KEY
     service:
       main:
-        ports:
-          http:
-            port: *port
+        enabled: false
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -46,13 +52,21 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
     volumeClaimTemplates:
       - name: config
-        mountPath: /app/config
+        mountPath: /config
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: longhorn
+    persistence:
+      config-file:
+        enabled: true
+        type: configMap
+        name: recyclarr-configmap
+        subPath: recyclarr.yml
+        mountPath: /config/recyclarr.yml
+        readOnly: true
     resources:
       requests:
         cpu: 10m
-        memory: 250Mi
+        memory: 50Mi
       limits:
-        memory: 1500Mi
+        memory: 200Mi

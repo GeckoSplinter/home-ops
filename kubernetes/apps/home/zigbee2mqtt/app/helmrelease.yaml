@@ -1,0 +1,80 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: zigbee2mqtt
+      version: 9.4.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-home-charts
+        namespace: flux-system
+      interval: 5m
+  dependsOn:
+    - name: mosquitto
+      namespace: home
+  upgrade:
+    remediation:
+      retries: 3
+  rollback:
+    cleanupOnFail: true
+  values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: 1.30.4
+    env:
+      TZ: Europe/Paris
+      ZIGBEE2MQTT_DATA: /data
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-zigbee2mqtt
+        mountPath: "/data"
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/zigbee
+    securityContext:
+      privileged: true
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: controller/zigbee
+              operator: Exists
+              #additionalVolumeMounts:
+              #  - name: usb
+              #    mountPath: /dev/zigbee
+              #additionalVolumes:
+              #  - name: usb
+              #    hostPath:
+              #      path: /dev/zigbee
+    # These config values are not what is my current state of zigbee2mqtt
+    # It's merely a guide for the initial start up on a fresh install
+    # Everything after the first start is managed in the UI
+    config:
+      homeassistant: true
+      device_options:
+        retain: true
+      permit_join: false
+      mqtt:
+        base_topic: zigbee2mqtt
+        server: "mqtt://mosquitto"
+        user: "zigbee2mqtt"
+        password: "Bah6IeCooVei4shoopheiJiS"
+      serial:
+        port: /dev/zigbee
+      advanced:
+        log_output:
+          - console
+        network_key: GENERATE
+        pan_id: GENERATE
+      frontend:
+        port: 8080

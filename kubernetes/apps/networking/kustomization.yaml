@@ -9,3 +9,4 @@ resources:
   - ./k8s-gateway/ks.yaml
   - ./pihole/ks.yaml
   - ./traefik/ks.yaml
+  - ./unify/ks.yaml
