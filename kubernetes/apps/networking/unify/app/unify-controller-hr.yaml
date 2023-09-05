@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: unify-controller
+  namespace: infra
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: statefulset
+    image:
+      repository: ghcr.io/linuxserver/unifi-controller
+      tag: 7.3.83
+    env:
+      TZ: Europe/Paris
+      PUID: 1000
+      PGID: 1000
+      MEM_LIMIT: 2048
+      MEM_STARTUP: 1024
+    service:
+      main:
+        ports:
+          http:
+            port: 8443
+      lan:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.41.71
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.42.71"
+        ports:
+          http:
+            port: 8443
+          ap-discovery:
+            protocol: UDP
+            port: 10001
+          stun:
+            protocol: UDP
+            port: 3478
+          device-comm:
+            port: 8080
+          mobile-speed:
+            port: 6789
+          remote-syslog:
+            enabled: false
+            protocol: UDP
+            port: 5514
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-unify
+        mountPath: /config
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1Gi
+      limits:
+        memory: 3Gi

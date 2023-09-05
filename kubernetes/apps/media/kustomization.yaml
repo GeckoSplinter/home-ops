@@ -7,8 +7,8 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./overseerr/ks.yaml
   # - ./plex/ks.yaml
-  # - ./prowlarr/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./sonarr/ks.yaml
-  # - ./tautulli/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./tautulli/ks.yaml

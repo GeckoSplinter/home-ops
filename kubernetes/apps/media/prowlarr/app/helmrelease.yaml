@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: prowlarr
   namespace: media
 spec:
   interval: 30m
@@ -28,17 +28,41 @@ spec:
     controller:
       type: statefulset
     image:
-      repository: ghcr.io/sct/overseerr
-      tag: 1.33.2
+      repository: ghcr.io/onedr0p/prowlarr-develop
+      tag: 1.8.1.3837@sha256:7070b1056d12c95cda997186974997a99e78aec5ebdd471517180431a5c06979
     env:
-      TZ: Europe/Paris
-      LOG_LEVEL: info
-      PORT: &port 80
+      TZ: Europe/Paris 
+      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__PORT: &port 80
+      PROWLARR__LOG_LEVEL: info
+      PROWLARR__AUTHENTICATION_METHOD: External
+      PROWLARR__THEME: dark
+      PROWLARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: app-arr-secret
+            key: PROWLARR__API_KEY
+
     service:
       main:
         ports:
           http:
             port: *port
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
@@ -46,13 +70,13 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
     volumeClaimTemplates:
       - name: config
-        mountPath: /app/config
+        mountPath: /config
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: longhorn
     resources:
       requests:
         cpu: 10m
-        memory: 250Mi
+        memory: 100Mi
       limits:
-        memory: 1500Mi
+        memory: 500Mi

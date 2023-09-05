@@ -71,7 +71,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: qbittorrent-config
+        existingClaim: config-qbittorrent
         mountPath: /config
       media:
         enabled: true

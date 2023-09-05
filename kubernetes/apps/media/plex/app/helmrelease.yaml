@@ -1,0 +1,78 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: csi-driver-nfs
+      namespace: kube-system
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/onedr0p/plex
+      tag: 1.32.5.7349-8f4248874
+    env:
+      TZ: Europe/Paris
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.42.140"
+        loadBalancerIP: "192.168.42.140"
+        ports:
+          http:
+            port: &port 32400
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: [44, 105, 10000]
+    persistence:
+      context:
+        enabled: true
+        existingClaim: config-plex
+        mountPath: /config
+      media:
+        enabled: true
+        type: nfs
+        server: 192.168.10.12
+        path: /volume1/video
+        mountPath: /media
+        readOnly: true
+      transcode:
+        enabled: false
+      local:
+        enabled: true
+        type: emptyDir
+        mountPath: /.local
+    resources:
+      requests:
+        cpu: 100m
+        memory: 2000Mi
+      limits:
+        memory: 8000Mi
