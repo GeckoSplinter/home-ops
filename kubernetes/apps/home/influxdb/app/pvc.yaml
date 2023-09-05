@@ -10,6 +10,6 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  storageClassName: longhorn
+  storageClassName: longhorn-static
   volumeMode: Filesystem
   volumeName: pvc-646b5857-b8fe-4a1c-940b-f7ba2fead0c2
