@@ -34,7 +34,7 @@ spec:
       tag: 1.30.4
     env:
       TZ: Europe/Paris
-      ZIGBEE2MQTT_DATA: /config
+      ZIGBEE2MQTT_DATA: /data
       ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
       ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
       ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY: GENERATE
