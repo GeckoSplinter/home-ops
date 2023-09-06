@@ -41,8 +41,8 @@ spec:
       main:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "192.168.42.140"
-        loadBalancerIP: "192.168.42.140"
+          io.cilium/lb-ipam-ips: "192.168.42.69"
+        loadBalancerIP: "192.168.42.69"
         ports:
           http:
             port: &port 32400
