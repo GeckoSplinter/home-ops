@@ -5,32 +5,53 @@ metadata:
   name: zigbee2mqtt
   namespace: home
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: zigbee2mqtt
-      version: 9.4.2
+      chart: app-template
+      version: 1.5.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-home-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
-  dependsOn:
-    - name: mosquitto
-      namespace: home
-  upgrade:
+  maxHistory: 2
+  install:
     remediation:
       retries: 3
-  rollback:
+  upgrade:
     cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.30.4
     env:
       TZ: Europe/Paris
-      ZIGBEE2MQTT_DATA: /data
+      ZIGBEE2MQTT_DATA: /config
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
+      ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+      ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY: GENERATE
+      ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: GENERATE
+      ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
+      ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+      ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+      ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 8080
+      ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.devbu.io
+      ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
+      ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+      ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://mosquitto.home.svc.cluster.local
+      ZIGBEE2MQTT_CONFIG_MQTT_BASE_TOPIC: zigbee2mqtt
+      ZIGBEE2MQTT_CONFIG_MQTT_USER: zigbee2mqtt
+      ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD: ${SECRET_MOSQUITTO__PASSWORD}
+      ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/zigbee
     persistence:
       config:
         enabled: true
@@ -49,32 +70,19 @@ spec:
           - matchExpressions:
             - key: controller/zigbee
               operator: Exists
-              #additionalVolumeMounts:
-              #  - name: usb
-              #    mountPath: /dev/zigbee
-              #additionalVolumes:
-              #  - name: usb
-              #    hostPath:
-              #      path: /dev/zigbee
-    # These config values are not what is my current state of zigbee2mqtt
-    # It's merely a guide for the initial start up on a fresh install
-    # Everything after the first start is managed in the UI
-    config:
-      homeassistant: true
-      device_options:
-        retain: true
-      permit_join: false
-      mqtt:
-        base_topic: zigbee2mqtt
-        server: "mqtt://mosquitto"
-        user: "zigbee2mqtt"
-        password: "Bah6IeCooVei4shoopheiJiS"
-      serial:
-        port: /dev/zigbee
-      advanced:
-        log_output:
-          - console
-        network_key: GENERATE
-        pan_id: GENERATE
-      frontend:
-        port: 8080
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 500Mi
