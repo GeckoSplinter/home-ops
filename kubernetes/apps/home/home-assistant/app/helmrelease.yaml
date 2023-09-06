@@ -40,21 +40,21 @@ spec:
             port: 8123
     metrics:
       enabled: true
-    # affinity:
-    #   nodeAffinity:
-    #     requiredDuringSchedulingIgnoredDuringExecution:
-    #       nodeSelectorTerms:
-    #       - matchExpressions:
-    #         - key: controller/rflink
-    #           operator: Exists
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: controller/rflink
+              operator: Exists
     persistence:
       config:
         enabled: true
         existingClaim: home-assistant-config
-      # usb:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /dev/rflink
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/rflink
     securityContext:
       privileged: true
     addons:
