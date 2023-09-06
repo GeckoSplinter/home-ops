@@ -48,7 +48,7 @@ spec:
       services:
         - kind: Service
           name: nas
-          namespace: infra
+          namespace: networking
           port: 443
           serversTransport: nas
     - match: "Host(`octopi.${SECRET_DOMAIN}`)"
@@ -56,5 +56,5 @@ spec:
       services:
         - kind: Service
           name: octopi
-          namespace: infra
+          namespace: nas
           port: 80
