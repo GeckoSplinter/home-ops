@@ -19,18 +19,11 @@ spec:
   tls:
     secretName: "${SECRET_DOMAIN/./-}-production-tls"
   routes:
-    - match: "Host(`pihole-1.${SECRET_DOMAIN}`)"
+    - match: "Host(`pihole.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
         - kind: Service
-          name: pihole-1-web
-          namespace: infra
-          port: 80
-    - match: "Host(`pihole-2.${SECRET_DOMAIN}`)"
-      kind: Rule
-      services:
-        - kind: Service
-          name: pihole-2-web
+          name: pihole-web
           namespace: infra
           port: 80
     - match: "Host(`traefik.${SECRET_DOMAIN}`)"
