@@ -22,7 +22,7 @@ spec:
   values:
     image:
       repository: "pihole/pihole"
-      tag: "2023.05.1"
+      tag: "2023.05.2"
     virtualHost: pihole.${SECRET_DOMAIN}
     serviceDns:
       mixedService: true
