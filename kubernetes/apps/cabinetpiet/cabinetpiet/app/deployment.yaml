@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cabinetpiet
+  namespace: cabinetpiet
+  labels:
+    app: cabinetpiet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cabinetpiet
+  template:
+    metadata:
+      labels:
+        app: cabinetpiet
+    spec:
+      imagePullSecrets:
+        - name: ghcr-login-secret
+      containers:
+        - image: ghcr.io/geckosplinter/cabinet-piet:1.0.0
+          imagePullPolicy: IfNotPresent
+          name: app
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+          resources:
+            limits:
+              cpu: 250m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
