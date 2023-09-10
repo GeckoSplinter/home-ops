@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${SECRET_CABINETPIET_DOMAIN/./-}-production"
+  namespace: networking
+spec:
+  secretName: "${SECRET_CABINETPIET_DOMAIN/./-}-production-tls"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "${SECRET_CABINETPIET_DOMAIN}"
+  dnsNames:
+    - "${SECRET_CABINETPIET_DOMAIN}"
+

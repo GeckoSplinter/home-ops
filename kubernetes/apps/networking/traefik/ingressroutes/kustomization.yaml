@@ -10,3 +10,4 @@ resources:
   - ./networking-ingressroute.yaml
   - ./other-ingressroute.yaml
   - ./public-ingressroute.yaml
+  - ./cabinetpiet-ingressroute.yaml
