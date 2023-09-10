@@ -11,7 +11,7 @@ spec:
   tls:
     secretName: "${SECRET_WEB_CABINET_DOMAIN/./-}-production-tls"
   routes:
-    - match: "Host(`${SECRET_WEB_CABINET_DOMAIN}`)"
+    - match: "Host(`${SECRET_WEB_CABINET_DOMAIN}`) || Host(`www.${SECRET_WEB_CABINET_DOMAIN}`)"
       kind: Rule
       services:
         - kind: Service
