@@ -12,4 +12,5 @@ spec:
   commonName: "${SECRET_WEB_CABINET_DOMAIN}"
   dnsNames:
     - "${SECRET_WEB_CABINET_DOMAIN}"
+    - "www.${SECRET_WEB_CABINET_DOMAIN}"
 
