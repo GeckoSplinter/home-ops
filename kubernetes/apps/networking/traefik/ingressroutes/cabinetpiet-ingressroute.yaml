@@ -9,9 +9,9 @@ spec:
     - http-pub
     - https-pub
   tls:
-    secretName: "${SECRET_CABINETPIET_DOMAIN/./-}-production-tls"
+    secretName: "${SECRET_WEB_CABINET_DOMAIN/./-}-production-tls"
   routes:
-    - match: "Host(`${SECRET_CABINETPIET_DOMAIN}`)"
+    - match: "Host(`${SECRET_WEB_CABINET_DOMAIN}`)"
       kind: Rule
       services:
         - kind: Service
