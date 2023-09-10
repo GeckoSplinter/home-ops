@@ -46,10 +46,3 @@ spec:
           name: overseerr
           namespace: media
           port: 80
-    - match: "Host(`${SECRET_CABINETPIET_DOMAIN}`)"
-      kind: Rule
-      services:
-        - kind: Service
-          name: cabinetpiet
-          namespace: cabinetpiet
-          port: 8080
