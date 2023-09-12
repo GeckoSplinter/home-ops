@@ -56,5 +56,5 @@ spec:
       services:
         - kind: Service
           name: octopi
-          namespace: nas
+          namespace: networking
           port: 80
