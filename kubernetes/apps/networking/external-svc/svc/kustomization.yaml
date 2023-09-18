@@ -5,3 +5,4 @@ namespace: networking
 resources:
   - ./nas.yaml
   - ./octopi.yaml
+  - ./pihole.yaml
