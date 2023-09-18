@@ -39,6 +39,10 @@ spec:
       MEM_STARTUP: 1024
     service:
       main:
+        ports:
+          http:
+            port: 8443
+      lan:
         type: LoadBalancer
         loadBalancerIP: 192.168.41.71
         annotations:
@@ -58,9 +62,6 @@ spec:
             enabled: false
             protocol: UDP
             port: 5514
-          http:
-            port: 8443
-      lan:
     persistence:
       config:
         enabled: true
