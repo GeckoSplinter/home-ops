@@ -48,8 +48,6 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: "192.168.42.71"
         ports:
-          http-portal:
-            port: 8443
           ap-discovery:
             protocol: UDP
             port: 10001
