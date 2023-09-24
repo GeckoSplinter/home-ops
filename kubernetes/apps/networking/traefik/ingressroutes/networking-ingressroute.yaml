@@ -23,7 +23,7 @@ spec:
       kind: Rule
       services:
         - kind: Service
-          name: pihole-web
+          name: pihole
           namespace: networking
           port: 80
     - match: "Host(`traefik.${SECRET_DOMAIN}`)"
