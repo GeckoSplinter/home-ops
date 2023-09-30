@@ -22,7 +22,3 @@ terraform {
 provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
-
-data "http" "ipv4_lookup_raw" {
-  url = "http://ipv4.icanhazip.com"
-}
