@@ -15,7 +15,7 @@ spec:
       kind: Rule
       services:
         - kind: Service
-          name: prometheus-stack-kube-prom-prometheus
+          name: kube-prometheus-stack-prometheus
           namespace: monitoring
           port: 9090
     - match: "Host(`grafana.${SECRET_DOMAIN}`)"
@@ -25,20 +25,13 @@ spec:
           name: grafana
           namespace: monitoring
           port: 80
-    - match: "Host(`prometheus.${SECRET_DOMAIN}`)"
-      kind: Rule
-      services:
-        - kind: Service
-          name: kube-prometheus-stack-prometheus
-          namespace: monitoring
-          port: 9090
-    - match: "Host(`loki.${SECRET_DOMAIN}`)"
-      kind: Rule
-      services:
-        - kind: Service
-          name: loki
-          namespace: monitoring
-          port: 3100
+    # - match: "Host(`loki.${SECRET_DOMAIN}`)"
+    #   kind: Rule
+    #   services:
+    #     - kind: Service
+    #       name: loki
+    #       namespace: monitoring
+    #       port: 3100
     - match: "Host(`hubble.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
