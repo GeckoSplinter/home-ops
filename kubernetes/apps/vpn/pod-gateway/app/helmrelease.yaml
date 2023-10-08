@@ -45,58 +45,58 @@ spec:
 
           ## ProtonVPN OPENVPN
           # --------------------
-          - name: VPN_SERVICE_PROVIDER
-            value: protonvpn
-          - name: SERVER_COUNTRIES
-            value: "Netherlands"
-          - name: OPENVPN_USER
-            valueFrom:
-              secretKeyRef:
-                name: pod-gateway-vpnconfig
-                key: OPENVPN_USER
-          - name: OPENVPN_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: pod-gateway-vpnconfig
-                key: OPENVPN_PASSWORD
+          # - name: VPN_SERVICE_PROVIDER
+          #   value: protonvpn
+          # - name: SERVER_COUNTRIES
+          #   value: "Netherlands"
+          # - name: OPENVPN_USER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: pod-gateway-vpnconfig
+          #       key: OPENVPN_USER
+          # - name: OPENVPN_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: pod-gateway-vpnconfig
+          #       key: OPENVPN_PASSWORD
 
           ## ProtonVPN Wireguarg
           # --------------------
-          # - name: VPN_TYPE
-          #   value: wireguard
-          # - name: VPN_SERVICE_PROVIDER
-          #   value: custom
-          # - name: VPN_PORT_FORWARDING_PROVIDER
-          #   value: protonvpn
-          # - name: VPN_INTERFACE
-          #   value: wg0
-          # - name: VPN_ENDPOINT_PORT
-          #   value: 51820
-          # - name: WIREGUARD_PRIVATE_KEY
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: pod-gateway-vpnconfig
-          #       key: WIREGUARD_PRIVATE_KEY
-          # - name: WIREGUARD_PUBLIC_KEY
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: pod-gateway-vpnconfig
-          #       key: WIREGUARD_PUBLIC_KEY
-          # - name: WIREGUARD_ADDRESSES
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: pod-gateway-vpnconfig
-          #       key: WIREGUARD_ADDRESSES
-          # - name: VPN_ENDPOINT_IP
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: pod-gateway-vpnconfig
-          #       key: VPN_ENDPOINT_IP
-          # - name: WIREGUARD_DNS
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: pod-gateway-vpnconfig
-          #       key: WIREGUARD_DNS
+          - name: VPN_TYPE
+            value: wireguard
+          - name: VPN_SERVICE_PROVIDER
+            value: custom
+          - name: VPN_PORT_FORWARDING_PROVIDER
+            value: protonvpn
+          - name: VPN_INTERFACE
+            value: wg0
+          - name: VPN_ENDPOINT_PORT
+            value: 51820
+          - name: WIREGUARD_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway-vpnconfig
+                key: WIREGUARD_PRIVATE_KEY
+          - name: WIREGUARD_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway-vpnconfig
+                key: WIREGUARD_PUBLIC_KEY
+          - name: WIREGUARD_ADDRESSES
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway-vpnconfig
+                key: WIREGUARD_ADDRESSES
+          - name: VPN_ENDPOINT_IP
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway-vpnconfig
+                key: VPN_ENDPOINT_IP
+          - name: WIREGUARD_DNS
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway-vpnconfig
+                key: WIREGUARD_DNS
 
         # envFrom:
         #   - secretRef:
