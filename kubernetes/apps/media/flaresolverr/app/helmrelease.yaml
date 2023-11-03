@@ -29,7 +29,7 @@ spec:
       repository: flaresolverr/flaresolverr
       tag: v3.3.6
     env:
-      TZ: Europe/Paris 
+      TZ: Europe/Paris
     service:
       main:
         ports:
@@ -39,4 +39,4 @@ spec:
       requests:
         memory: 105Mi
       limits:
-        memory: 292Mi
+        memory: 512Mi
