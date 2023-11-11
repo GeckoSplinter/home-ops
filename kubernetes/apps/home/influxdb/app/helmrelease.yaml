@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: bitnami/influxdb
-      tag: 2.7.3
+      tag: 2.7.4
     persistence:
       enabled: true
       existingClaim: influxdb
