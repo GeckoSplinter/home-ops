@@ -30,7 +30,7 @@ spec:
       type: statefulset
     image:
       repository: ghcr.io/linuxserver/unifi-controller
-      tag: 7.5.187
+      tag: 8.0.7
     env:
       TZ: Europe/Paris
       PUID: 1000
