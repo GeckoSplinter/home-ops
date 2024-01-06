@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: influxdb
-      version: 5.11.1
+      version: 5.11.2
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: bitnami/influxdb
-      tag: 2.7.4
+      tag: 2.7.5
     persistence:
       enabled: true
       existingClaim: influxdb
