@@ -29,49 +29,50 @@ spec:
       namespace: kube-system
   values:
     controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    containers:
       main:
-        image:
-          repository: ghcr.io/onedr0p/plex
-          tag: 1.32.8.7639-fb6452ebf
-        env:
-          TZ: Europe/Paris
-        probes:
-          liveness: &probes
-            enabled: true
-            custom: true
-            spec:
-              httpGet:
-                path: /identity
-                port: 32400
-              initialDelaySeconds: 0
-              periodSeconds: 10
-              timeoutSeconds: 1
-              failureThreshold: 3
-          readiness: *probes
-          startup:
-            enabled: false
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: { drop: ["ALL"] }
-          resources:
-            requests:
-              cpu: 200m
-              memory: 2Gi
-            limits:
-              memory: 8Gi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [44, 105, 10000]
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/plex
+              tag: 1.32.8.7639-fb6452ebf
+            env:
+              TZ: Europe/Paris
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 2Gi
+                limits:
+                  memory: 8Gi
+            pod:
+              securityContext:
+                runAsUser: 568
+                runAsGroup: 568
+                runAsNonRoot: true
+                fsGroup: 568
+                fsGroupChangePolicy: OnRootMismatch
+                supplementalGroups: [44, 105, 10000]
     service:
       main:
         type: LoadBalancer
