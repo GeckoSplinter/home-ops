@@ -28,7 +28,7 @@ spec:
     - name: csi-driver-nfs
       namespace: kube-system
   values:
-    controller:
+    controllers:
       main:
         type: statefulset
         annotations:
