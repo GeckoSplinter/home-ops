@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -32,11 +32,46 @@ spec:
       type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/plex
-      tag: 1.32.6.7557-1cf77d501
-    env:
-      TZ: Europe/Paris
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/plex
+          tag: 1.32.8.7639-fb6452ebf
+        env:
+          TZ: Europe/Paris
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /identity
+                port: 32400
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+          startup:
+            enabled: false
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          resources:
+            requests:
+              cpu: 200m
+              memory: 2Gi
+            limits:
+              memory: 8Gi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [44, 105, 10000]
     service:
       main:
         type: LoadBalancer
@@ -46,12 +81,6 @@ spec:
         ports:
           http:
             port: &port 32400
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [44, 105, 10000]
     persistence:
       context:
         enabled: true
@@ -70,9 +99,3 @@ spec:
         enabled: true
         type: emptyDir
         mountPath: /.local
-    resources:
-      requests:
-        cpu: 100m
-        memory: 2000Mi
-      limits:
-        memory: 8000Mi
