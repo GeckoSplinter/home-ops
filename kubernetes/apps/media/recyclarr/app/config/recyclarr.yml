@@ -242,7 +242,6 @@ radarr:
           - name: HD-Fr
       - trash_ids:
         - d5f3a1afdb77e6b95e489f7654532d04 # Multi French 0
-        - 3c83a765f84239716bd5fd2d7af188f9 # FR Screne Groups
         quality_profiles:
           - name: UHD-Fr
             score: 0
