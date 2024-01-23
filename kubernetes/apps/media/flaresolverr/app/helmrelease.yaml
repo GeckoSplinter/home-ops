@@ -9,12 +9,11 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
@@ -25,18 +24,22 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: flaresolverr/flaresolverr
-      tag: v3.3.13
-    env:
-      TZ: Europe/Paris
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: flaresolverr/flaresolverr
+              tag: v3.3.13
+            env:
+              TZ: Europe/Paris
+          resources:
+            requests:
+              memory: 105Mi
+            limits:
+              memory: 512Mi
     service:
       main:
         ports:
           http:
             port: 8191
-    resources:
-      requests:
-        memory: 105Mi
-      limits:
-        memory: 512Mi
