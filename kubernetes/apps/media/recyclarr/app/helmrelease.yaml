@@ -71,13 +71,10 @@ spec:
     service:
       main:
         enabled: false
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
     persistence:
+      config:
+        enabled: true
+        existingClaim: config-recyclarr-0
       config-file:
         enabled: true
         type: configMap
