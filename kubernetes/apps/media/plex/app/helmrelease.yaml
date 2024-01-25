@@ -84,7 +84,7 @@ spec:
           http:
             port: &port 32400
     persistence:
-      context:
+      config:
         enabled: true
         existingClaim: config-plex
         mountPath: /config
@@ -96,8 +96,8 @@ spec:
         mountPath: /media
         readOnly: true
       transcode:
-        enabled: false
-      local:
         enabled: true
         type: emptyDir
-        mountPath: /.local
+      tmp:
+        enabled: true
+        type: emptyDir
