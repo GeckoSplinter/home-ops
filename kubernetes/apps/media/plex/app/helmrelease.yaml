@@ -55,17 +55,17 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-              securityContext:
-                allowPrivilegeEscalation: false
-                readOnlyRootFilesystem: true
-                capabilities: { drop: ["ALL"] }
-              resources:
-                requests:
-                  cpu: 200m
-                  memory: 2Gi
-                limits:
-                  memory: 8Gi
-                  amd.com/gpu: 1
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 8Gi
+                amd.com/gpu: 1
             pod:
               securityContext:
                 runAsUser: 568
