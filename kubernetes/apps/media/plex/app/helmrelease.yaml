@@ -55,16 +55,17 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
-              securityContext:
-                allowPrivilegeEscalation: false
-                readOnlyRootFilesystem: true
-                capabilities: { drop: ["ALL"] }
-              resources:
-                requests:
-                  cpu: 200m
-                  memory: 2Gi
-                limits:
-                  memory: 8Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 8Gi
+                amd.com/gpu: 1
             pod:
               securityContext:
                 runAsUser: 568
@@ -83,7 +84,7 @@ spec:
           http:
             port: &port 32400
     persistence:
-      context:
+      config:
         enabled: true
         existingClaim: config-plex
         mountPath: /config
@@ -95,8 +96,8 @@ spec:
         mountPath: /media
         readOnly: true
       transcode:
-        enabled: false
-      local:
         enabled: true
         type: emptyDir
-        mountPath: /.local
+      tmp:
+        enabled: true
+        type: emptyDir
