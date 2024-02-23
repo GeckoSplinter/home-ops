@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -9,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -26,27 +27,72 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/home-assistant/home-assistant
-      tag: 2024.2.2
-    env:
-      TZ: 'Europe/Paris'
+    controllers:
+      main:
+        type: statefulset
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2024.2.2
+            env:
+              TZ: 'Europe/Paris'
+              HASS_HTTP_TRUSTED_PROXY_1: 192.168.10.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 192.168.42.0/24
+              HASS_HTTP_TRUSTED_PROXY_3: 10.42.0.0/16
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+          code:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.21.1
+            env:
+              TZ: America/New_York
+            args: [
+              "--auth", "none",
+              "--user-data-dir", "/config/.vscode",
+              "--extensions-dir", "/config/.vscode",
+              "--port", "80",
+              "/config"
+            ]
+            probes: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       main:
         ports:
           http:
             port: 8123
-    metrics:
-      enabled: true
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: controller/rflink
-              operator: Exists
+      code:
+        ports:
+          http:
+            port: 80
+    serviceMonitor:
+      main:
+        enabled: true
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: controller/rflink
+                operator: Exists
     persistence:
       config:
         enabled: true
@@ -55,26 +101,3 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /dev/rflink
-    securityContext:
-      privileged: true
-    addons:
-      codeserver:
-        enabled: true
-        image:
-          repository: ghcr.io/coder/code-server
-          tag: 4.21.1
-        env:
-          TZ: Europe/Paris
-        git:
-          deployKeySecret: code-server
-        workingDir: /config
-        args:
-          - --auth
-          - "none"
-          - --user-data-dir
-          - "/config/.vscode"
-          - --extensions-dir
-          - "/config/.vscode"
-        volumeMounts:
-          - name: config
-            mountPath: /config
