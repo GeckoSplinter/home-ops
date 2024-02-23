@@ -30,6 +30,8 @@ spec:
     controllers:
       main:
         type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           main:
             image:
@@ -52,7 +54,7 @@ spec:
               repository: ghcr.io/coder/code-server
               tag: 4.21.1
             env:
-              TZ: America/New_York
+              TZ: Europe/Paris
             args: [
               "--auth", "none",
               "--user-data-dir", "/config/.vscode",
