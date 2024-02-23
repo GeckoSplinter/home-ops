@@ -87,9 +87,7 @@ spec:
         ports:
           http:
             port: 8123
-      code:
-        ports:
-          http:
+          code:
             port: 80
     serviceMonitor:
       main:
