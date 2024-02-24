@@ -52,9 +52,10 @@ spec:
               ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/zigbee
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              privileged: true
+              # allowPrivilegeEscalation: false
+              # readOnlyRootFilesystem: true
+              # capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -62,7 +63,6 @@ spec:
                 memory: 512Mi
         pod:
           securityContext:
-            privileged: true
             runAsUser: 568
             runAsGroup: 568
             runAsNonRoot: true
