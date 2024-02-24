@@ -73,7 +73,8 @@ spec:
       config:
         enabled: true
         existingClaim: config-zigbee2mqtt
-        mountPath: "/data"
+        globalMounts:
+          - path: /data
       usb:
         enabled: true
         type: hostPath
