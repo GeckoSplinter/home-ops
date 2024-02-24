@@ -15,9 +15,9 @@ spec:
       kind: Rule
       services:
         - kind: Service
-          name: home-assistant-addon-codeserver
+          name: home-assistant
           namespace: home
-          port: 12321
+          port: 80
     - match: "Host(`influxdb.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
