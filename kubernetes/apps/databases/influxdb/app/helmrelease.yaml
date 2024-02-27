@@ -55,4 +55,5 @@ spec:
 
     persistence:
       enabled: true
-      existingClaim: "influxdb"
+      useExisting: true
+      name: "influxdb"
