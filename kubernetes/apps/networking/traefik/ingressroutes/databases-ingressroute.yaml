@@ -17,4 +17,4 @@ spec:
         - kind: Service
           name: influxdb
           namespace: databases
-          port: 8086
+          port: 80
