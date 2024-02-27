@@ -31,6 +31,7 @@ spec:
     keepHistory: false
   # Values link: https://github.com/influxdata/helm-charts/blob/master/charts/influxdb2/values.yaml
   values:
+    fullnameOverride: "influxdb"
     image:
       repository: influxdb
       tag: 2.7.1-alpine
