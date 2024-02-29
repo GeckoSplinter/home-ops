@@ -2,3 +2,4 @@ k3s_agent:
   node-label:
     - "controller/zigbee=true"
     - "controller/rflink=true"
+    - "gpu/amd=true"
