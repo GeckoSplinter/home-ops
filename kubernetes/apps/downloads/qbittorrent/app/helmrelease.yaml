@@ -76,8 +76,8 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: 192.168.10.12
-        path: /volume1/video
+        server: 192.168.42.10
+        path: /mnt/user/Video
         mountPath: /media
       incomplete:
         enabled: true

@@ -33,7 +33,7 @@ spec:
       repository: ghcr.io/onedr0p/sonarr-develop
       tag: 4.0.4.1572@sha256:d81502f65a47f88525c90a9eb933e5f92bb608b1910f0c63aeff5c723340be97
     env:
-      TZ: Europe/Paris 
+      TZ: Europe/Paris
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 80
       SONARR__APPLICATION_URL: "https://sonarr.bjw-s.dev"
@@ -81,8 +81,8 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: 192.168.10.12
-        path: /volume1/video
+        server: 192.168.42.10
+        path: /mnt/user/Video
         mountPath: /media
     resources:
       requests:
