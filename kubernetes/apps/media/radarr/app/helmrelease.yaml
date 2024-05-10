@@ -31,7 +31,7 @@ spec:
       repository: ghcr.io/onedr0p/radarr-develop
       tag: 5.5.1.8747@sha256:4ae36e5329fa90aa95e180a9abad4856e147500f65cf7262a193f08a2480a136
     env:
-      TZ: Europe/Paris 
+      TZ: Europe/Paris
       RADARR__INSTANCE_NAME: Radarr
       RADARR__PORT: &port 80
       RADARR__APPLICATION_URL: "https://radarr.${SECRET_DOMAIN}"
@@ -79,8 +79,8 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: 192.168.10.12
-        path: /volume1/video
+        server: 192.168.42.10
+        path: /mnt/user/Video
         mountPath: /media
     resources:
       requests:
