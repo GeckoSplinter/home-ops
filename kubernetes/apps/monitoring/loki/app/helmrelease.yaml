@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: loki
+      version: 6.5.2
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+    - name: kube-prometheus-stack
+      namespace: monitoring
+  values:
+    deploymentMode: SingleBinary
+    loki:
+      image:
+        repository: grafana/loki
+        tag: 3.0.0
+      auth_enabled: false
+      storage:
+        type: filesystem
+      commonConfig:
+        replication_factor: 1
+      limits_config:
+        retention_period: 7d
+      rulerConfig:
+        alertmanager_url: http://kube-prometheus-stack-alertmanager:9093
+    write:
+      replicas: 0
+    read:
+      replicas: 0
+    backend:
+      replicas: 0
+    singleBinary:
+      replicas: 1
+      persistence:
+        size: 50Gi
+        storageClass: longhorn
+    test:
+      enabled: false
+    monitoring:
+      selfMonitoring:
+        enabled: false
+      lokiCanary:
+        enabled: false
