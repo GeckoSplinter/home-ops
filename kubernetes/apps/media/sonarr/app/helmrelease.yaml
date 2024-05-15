@@ -92,10 +92,7 @@ spec:
             port: *port
     persistence:
       config:
-        type: persistentVolumeClaim
-        storageClass: longhorn
-        accessMode: ReadWriteOnce
-        size: 2Gi
+        existingClaim: sonarr-config
         globalMounts:
           - path: /config
             readOnly: false
