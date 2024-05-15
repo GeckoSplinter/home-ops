@@ -1,5 +1,6 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: sonarr
@@ -9,84 +10,99 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 4.0.4.1668@sha256:a124ebab8c3747af7267c25b0c093350363ecf7d24dd68255b3de2f1921ae7d9
-    env:
-      TZ: Europe/Paris
-      SONARR__INSTANCE_NAME: Sonarr
-      SONARR__PORT: &port 80
-      SONARR__APPLICATION_URL: "https://sonarr.bjw-s.dev"
-      SONARR__LOG_LEVEL: info
-      SONARR__THEME: dark
-      SONARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: app-arr-secret
-            key: SONARR__API_KEY
-
+    controllers:
+      sonarr:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/sonarr-develop
+              tag: 4.0.4.1668@sha256:0b89ee847f0b7e782386be22f964de18046e828c47d0d34eba5b3651c361eaa4
+            env:
+              TZ: Europe/Paris
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: &port 80
+              SONARR__LOG_LEVEL: info
+              SONARR__THEME: dark
+              SONARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: app-arr-secret
+                    key: SONARR__API_KEY
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 80
+              SONARR__UPDATE__BRANCH: develop
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
-      main:
+      app:
+        controller: sonarr
         ports:
           http:
             port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [44, 105, 10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: longhorn
     persistence:
+      config:
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        globalMounts:
+          - path: /config
+            readOnly: false
+      tmp:
+        type: emptyDir
       media:
-        enabled: true
         type: nfs
         server: 192.168.42.10
         path: /mnt/user/Video
-        mountPath: /media
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 2000Mi
+        globalMounts:
+          - path: /media
