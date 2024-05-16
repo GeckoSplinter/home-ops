@@ -28,7 +28,7 @@ spec:
       namespace: longhorn-system
   values:
     controllers:
-      raddar:
+      radarr:
         type: statefulset
         replicas: 1
         annotations:
