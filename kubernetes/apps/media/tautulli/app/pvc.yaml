@@ -13,4 +13,3 @@ spec:
   storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-fd9d1c46-99d4-4ad6-809c-02e12eee3445
-
