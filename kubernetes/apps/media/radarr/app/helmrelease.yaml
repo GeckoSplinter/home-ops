@@ -1,5 +1,6 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: radarr
@@ -9,82 +10,96 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/radarr-develop
-      tag: 5.5.2.8781@sha256:4b7de43df00613272532de7ecfc6a3207cb0a74fdcb2b05dd110ec2ebb493352
-    env:
-      TZ: Europe/Paris
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 80
-      RADARR__APPLICATION_URL: "https://radarr.${SECRET_DOMAIN}"
-      RADARR__LOG_LEVEL: info
-      RADARR__THEME: dark
-      RADARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: app-arr-secret
-            key: RADARR__API_KEY
-
+    controllers:
+      raddar:
+        type: statefulset
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/radarr-develop
+              tag: 5.5.2.8781@sha256:4b7de43df00613272532de7ecfc6a3207cb0a74fdcb2b05dd110ec2ebb493352
+            env:
+              TZ: Europe/Paris
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 80
+              RADARR__APPLICATION_URL: "https://radarr.${SECRET_DOMAIN}"
+              RADARR__LOG_LEVEL: info
+              RADARR__THEME: dark
+              RADARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: app-arr-secret
+                    key: RADARR__API_KEY
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 2000Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 105, 10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
-      main:
+      app:
+        controller: radarr
         ports:
           http:
             port: *port
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [44, 105, 10000]
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 5Gi
-        storageClass: longhorn
     persistence:
+      config:
+        existingClaim: radarr-config
+        globalMounts:
+          - path: /config
+            readOnly: false
+      tmp:
+        type: emptyDir
       media:
         enabled: true
         type: nfs
         server: 192.168.42.10
         path: /mnt/user/Video
-        mountPath: /media
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 2000Mi
+        globalMounts:
+          - path: /media
+
