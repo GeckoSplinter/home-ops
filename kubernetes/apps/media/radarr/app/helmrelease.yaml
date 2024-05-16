@@ -29,8 +29,6 @@ spec:
   values:
     controllers:
       radarr:
-        type: statefulset
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
