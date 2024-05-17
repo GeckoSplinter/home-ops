@@ -5,6 +5,7 @@ namespace: home
 resources:
   - ./helmrelease.yaml
   - ./mosquitto-secrets.sops.yaml
+  - ./pvc.yaml
 configMapGenerator:
   - name: mosquitto-configmap
     files:
