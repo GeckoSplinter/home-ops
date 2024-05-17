@@ -90,16 +90,6 @@ spec:
             port: 8123
           code:
             port: 80
-    serviceMonitor:
-      app:
-        enabled: false
-        serviceName: home-assistant
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     defaultPodOptions:
       securityContext:
         runAsUser: 568
