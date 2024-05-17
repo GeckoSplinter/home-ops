@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: config-zigbee2mqtt
+  name: zigbee2mqtt-config
   namespace: home
 spec:
   accessModes:
@@ -10,6 +10,6 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: longhorn-static
+  storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-a9cb6d6e-3395-40ec-8e8a-9cf5c23f707c
