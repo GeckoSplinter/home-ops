@@ -92,7 +92,7 @@ spec:
             port: 80
     serviceMonitor:
       app:
-        enabled: true
+        enabled: false
         serviceName: home-assistant
         endpoints:
           - port: metrics
