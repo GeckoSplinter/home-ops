@@ -86,9 +86,13 @@ spec:
         advancedMounts:
           mosquitto:
             init-config:
-              - path: /data/mosquitto_secret
+              - path: /data/mosquitto_secret/mosquitto_pwd
       external-config:
         enabled: true
         type: emptyDir
-        globalMounts:
-          - path: /data/external_config
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /mosquitto/external_config
+            init-config:
+              - path: /data/external_config
