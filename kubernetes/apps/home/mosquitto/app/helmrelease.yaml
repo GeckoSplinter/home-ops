@@ -68,8 +68,8 @@ spec:
       config:
         existingClaim: mosquitto-config
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
               - path: /data
       config-file:
         type: configMap
@@ -84,7 +84,7 @@ spec:
         name: mosquitto
         defaultMode: 0700
         advancedMounts:
-          main:
+          mosquitto:
             init-config:
               - path: /data/mosquitto_secret
       external-config:
