@@ -90,5 +90,9 @@ spec:
       external-config:
         enabled: true
         type: emptyDir
-        globalMounts:
-          - path: /mosquitto/external_config
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /mosquitto/external_config
+            init-config:
+              - path: /data/external_config
