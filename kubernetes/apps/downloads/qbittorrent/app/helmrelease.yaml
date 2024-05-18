@@ -1,5 +1,6 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: qbittorrent
@@ -9,82 +10,96 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
-    controller:
-      type: statefulset
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.6.4@sha256:b9af0f2173572a69d2c02eab8f701ef7b04f61689efe1c5338b96445d528dec4
-    global:
-      fullnameOverride: qbittorrent
-    hostname: qbittorrent
-    podAnnotations:
-       setGateway: "true"
-    addons:
-      netshoot:
-        enabled: true
-    env:
-      TZ: Europe/Paris
-      QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: &bittorrentPort 55633
-      QBT_Application__MemoryWorkingSetLimit: 12000
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          setGateway: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.4@sha256:b9af0f2173572a69d2c02eab8f701ef7b04f61689efe1c5338b96445d528dec4
+            env:
+              TZ: Europe/Paris
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 55633
+              QBT_Application__MemoryWorkingSetLimit: 12000
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 8Gi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
     service:
-      main:
-        ports:
-          http:
-            port: *port
-      bittorrent:
-        enabled: true
+      app:
+        controller: qbittorrent
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.42.67
         ports:
+          http:
+            port: *port
           bittorrent:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
-            targetPort: *bittorrentPort
-        externalTrafficPolicy: Local
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
+    global:
+      fullnameOverride: qbittorrent
+    hostname: qbittorrent
     # Note: If downloading very large torrents it might be worth using NFS for your download directory.
     # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
     persistence:
       config:
         enabled: true
         existingClaim: config-qbittorrent
-        mountPath: /config
+        globalMounts:
+          - path: /config
       media:
         enabled: true
         type: nfs
         server: 192.168.42.10
         path: /mnt/user/Video
-        mountPath: /media
+        globalMounts:
+          - path: /media
       incomplete:
         enabled: true
         type: emptyDir
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 8Gi
