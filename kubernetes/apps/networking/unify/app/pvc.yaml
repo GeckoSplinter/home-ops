@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: config-unify
+  name: unify-config
   namespace: networking
 spec:
   accessModes:
@@ -10,6 +10,6 @@ spec:
   resources:
     requests:
       storage: 25Gi
-  storageClassName: longhorn-static
+  storageClassName: longhorn
   volumeMode: Filesystem
   volumeName: pvc-4a5f70ef-c200-42d1-9172-4055254d9133
