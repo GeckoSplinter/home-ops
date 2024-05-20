@@ -97,7 +97,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: config-qbittorrent
+        existingClaim: qbitorrent-config
         globalMounts:
           - path: /config
       media:
