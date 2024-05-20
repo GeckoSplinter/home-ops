@@ -2,10 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-networking-unify
+  name: cluster-apps-networking-unifi
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/networking/unify/app
+  path: ./kubernetes/apps/networking/unifi/app
   prune: true
   sourceRef:
     kind: GitRepository
