@@ -31,11 +31,11 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-    - match: "Host(`unify.${SECRET_DOMAIN}`)"
+    - match: "Host(`unifi.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
         - kind: Service
-          name: unify-controller
+          name: unifi-controller
           namespace: networking
           port: 8443
           serversTransport: networking
