@@ -74,6 +74,6 @@ spec:
             port: 5514
     persistence:
       config:
-        existingClaim: config-unify
+        existingClaim: unify-config
         globalMounts:
           - path: /config
