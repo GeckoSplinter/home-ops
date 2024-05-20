@@ -9,4 +9,4 @@ resources:
   - ./external-svc/ks.yaml
   - ./k8s-gateway/ks.yaml
   - ./traefik/ks.yaml
-  - ./unify/ks.yaml
+  - ./unifi/ks.yaml
