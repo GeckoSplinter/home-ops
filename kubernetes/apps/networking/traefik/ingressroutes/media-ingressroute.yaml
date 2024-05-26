@@ -24,7 +24,7 @@ spec:
         - kind: Service
           name: tautulli
           namespace: media
-          port: 8181
+          port: 80
     - match: "Host(`sonarr.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
