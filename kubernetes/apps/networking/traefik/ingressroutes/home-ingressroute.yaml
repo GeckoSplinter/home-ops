@@ -18,13 +18,6 @@ spec:
           name: home-assistant
           namespace: home
           port: 80
-    - match: "Host(`influxdb.${SECRET_DOMAIN}`)"
-      kind: Rule
-      services:
-        - kind: Service
-          name: influxdb
-          namespace: home
-          port: 8086
     - match: "Host(`node-red.${SECRET_DOMAIN}`)"
       kind: Rule
       services:
