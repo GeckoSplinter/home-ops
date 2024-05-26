@@ -33,6 +33,7 @@ spec:
               - traefik
           topologyKey: kubernetes.io/hostname
     service:
+      enabled: true
       annotations:
         io.cilium/lb-ipam-ips: "192.168.42.65"
       spec:
@@ -40,17 +41,24 @@ spec:
     ports:
       web:
         port: 8000
-        expose: true
+        expose:
+          default: true
+        redirectTo:
+          port: websecure
       websecure:
         port: 8443
-        expose: true
+        expose:
+          default: true
       http-pub:
         port: 7080
+        redirectTo:
+          port: https-pub
       https-pub:
         port: 7443
       metrics:
         port: 9100
-        expose: false
+        expose:
+          default: false
     ingressRoute:
       dashboard:
         enabled: false
@@ -60,14 +68,15 @@ spec:
         minVersion: VersionTLS12
         maxVersion: VersionTLS13
         sniStrict: true
-    pilot:
-      enabled: false
-    additionalArguments:
-      - '--entryPoints.web.http.redirections.entryPoint.to=websecure'
-      - '--entryPoints.web.http.redirections.entryPoint.scheme=https'
-      - '--entrypoints.web.http.redirections.entryPoint.to=:443'
-      - '--entryPoints.http-pub.http.redirections.entryPoint.to=https-pub'
-      - '--entryPoints.http-pub.http.redirections.entryPoint.scheme=https'
-      - '--entrypoints.http-pub.http.redirections.entryPoint.to=:443'
-      - '--providers.kubernetescrd.allowcrossnamespace=true'
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
 
+    # additionalArguments:
+    #   - '--entryPoints.web.http.redirections.entryPoint.to=websecure'
+    #   - '--entryPoints.web.http.redirections.entryPoint.scheme=https'
+    #   - '--entrypoints.web.http.redirections.entryPoint.to=:443'
+    #   - '--entryPoints.http-pub.http.redirections.entryPoint.to=https-pub'
+    #   - '--entryPoints.http-pub.http.redirections.entryPoint.scheme=https'
+    #   - '--entrypoints.http-pub.http.redirections.entryPoint.to=:443'
