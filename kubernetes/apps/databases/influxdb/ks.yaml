@@ -5,7 +5,7 @@ metadata:
   name: &app influxdb
   namespace: flux-system
 spec:
-  targetNamespace: influxdb
+  targetNamespace: databases
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
