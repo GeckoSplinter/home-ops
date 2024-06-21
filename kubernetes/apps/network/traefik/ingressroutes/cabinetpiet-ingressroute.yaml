@@ -1,0 +1,20 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: public-cabinetpiet
+  namespace: network
+spec:
+  entryPoints:
+    - http-pub
+    - https-pub
+  tls:
+    secretName: "${SECRET_WEB_CABINET_DOMAIN/./-}-production-tls"
+  routes:
+    - match: "Host(`${SECRET_WEB_CABINET_DOMAIN}`) || Host(`www.${SECRET_WEB_CABINET_DOMAIN}`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: cabinetpiet
+          namespace: cabinetpiet
+          port: 8080

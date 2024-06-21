@@ -6,11 +6,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
+  url: https://git@github.com/GeckoSplinter/home-ops.git
   ref:
     branch: main
-  url: ssh://git@github.com/GeckoSplinter/home-ops
-  secretRef:
-    name: github-deploy-key
   ignore: |
     # exclude all
     /*

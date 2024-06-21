@@ -15,11 +15,13 @@ resources:
   - ./ingress-nginx.yaml
   - ./jetstack.yaml
   - ./k8s-gateway.yaml
-  - ./kubernetes-dashboard.yaml
   - ./longhorn.yaml
   - ./metrics-server.yaml
+  - ./openebs.yaml
   - ./pihole.yaml
+  - ./postfinance.yaml
   - ./prometheus-community.yaml
+  - ./spegel.yaml
   - ./stakater.yaml
   - ./traefik.yaml
   - ./weave-gitops.yaml
