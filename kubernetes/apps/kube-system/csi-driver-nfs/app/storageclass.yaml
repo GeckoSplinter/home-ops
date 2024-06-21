@@ -2,18 +2,6 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-nas
-provisioner: nfs.csi.k8s.io
-parameters:
-  server: 192.168.10.12:/volume1/
-  share: /video
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
-mountOptions: ["hard", "noatime"]
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
   name: nfs-naboo-video
 provisioner: nfs.csi.k8s.io
 parameters:
