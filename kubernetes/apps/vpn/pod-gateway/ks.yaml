@@ -5,7 +5,7 @@ metadata:
   name: &app pod-gateway
   namespace: flux-system
 spec:
-  targetNamespace: pod-gateway
+  targetNamespace: vpn
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
