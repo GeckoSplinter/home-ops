@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: network
-  path: ./kubernetes/apps/networking/traefik/certificates
+  path: ./kubernetes/apps/network/traefik/certificates
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,7 +28,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/networking/traefik/app
+  path: ./kubernetes/apps/network/traefik/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -46,7 +46,7 @@ metadata:
 spec:
   dependsOn:
     - name: traefik
-  path: ./kubernetes/apps/networking/traefik/middlewares
+  path: ./kubernetes/apps/network/traefik/middlewares
   prune: true
   sourceRef:
     kind: GitRepository
@@ -65,7 +65,7 @@ spec:
   dependsOn:
     - name: traefik
     - name: traefik-middlewares
-  path: ./kubernetes/apps/networking/traefik/ingressroutes
+  path: ./kubernetes/apps/network/traefik/ingressroutes
   prune: true
   sourceRef:
     kind: GitRepository
