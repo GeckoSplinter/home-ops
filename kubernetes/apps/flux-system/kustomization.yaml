@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./weave-gitops/ks.yaml
+  - ./webhooks/ks.yaml
