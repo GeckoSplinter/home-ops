@@ -10,7 +10,7 @@ machine:
           - rw
 
   disks:
-      - device: /dev/sdb
+      - device: /dev/sda
         partitions:
           - mountpoint: /var/mnt/hdd-1000
 
