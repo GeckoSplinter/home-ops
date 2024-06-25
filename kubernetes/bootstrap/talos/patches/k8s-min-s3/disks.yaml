@@ -1,0 +1,16 @@
+machine:
+  kubelet:
+    extraMounts:
+      - destination: /var/mnt/ssd-800
+        type: bind
+        source: /var/mnt/ssd-800
+        options:
+          - bind
+          - rshared
+          - rw
+
+  disks:
+      - device: /dev/sdb
+        partitions:
+          - mountpoint: /var/mnt/ssd-800
+

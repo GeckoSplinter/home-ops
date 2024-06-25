@@ -39,9 +39,11 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.32"
+    patches:
+      - "@./patches/k8s-bee-s1/disks.yaml"
   - hostname: "k8s-mac-s2"
     ipAddress: "192.168.42.34"
-    installDisk: "/dev/sdb"
+    installDisk: "/dev/sdc"
     talosImageURL: factory.talos.dev/installer/613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
     controlPlane: true
     networkInterfaces:
@@ -56,6 +58,8 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.32"
+    patches:
+      - "@./patches/k8s-mac-s2/disks.yaml"
   - hostname: "k8s-min-s3"
     ipAddress: "192.168.42.35"
     installDisk: "/dev/nvme0n1"
@@ -73,6 +77,8 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.42.32"
+    patches:
+      - "@./patches/k8s-min-s3/disks.yaml"
 
 # Global patches
 patches:
