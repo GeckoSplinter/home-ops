@@ -5,6 +5,7 @@ metadata:
   name: plex
   namespace: flux-system
 spec:
+  targetNamespace: media
   path: ./kubernetes/apps/media/plex/app
   prune: true
   sourceRef:
