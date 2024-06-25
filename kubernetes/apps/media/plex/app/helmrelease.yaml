@@ -68,7 +68,7 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 8Gi
-                amd.com/gpu: 1
+                # amd.com/gpu: 1
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -88,6 +88,19 @@ spec:
         ports:
           http:
             port: 32400
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        className: external
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         existingClaim: config-plex
