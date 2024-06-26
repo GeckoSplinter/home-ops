@@ -81,6 +81,8 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          hajimari.io/icon: movie-search
+          hajimari.io/info: "Movie and TV Show Requests"
         className: external
         hosts:
           - host: "overseerr.${SECRET_DOMAIN}"
