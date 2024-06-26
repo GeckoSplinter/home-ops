@@ -80,7 +80,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          hajimari.io/icon: download-circle
+          hajimari.io/icon: "cbi:qbittorrent"
           hajimari.io/name: torrent
         className: internal
         hosts:

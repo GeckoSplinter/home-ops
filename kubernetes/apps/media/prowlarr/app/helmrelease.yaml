@@ -82,6 +82,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
           hajimari.io/info: "Proxy for Rr application to tracker"
+          hajimari.io/icon: "cbi:prowlarr"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
