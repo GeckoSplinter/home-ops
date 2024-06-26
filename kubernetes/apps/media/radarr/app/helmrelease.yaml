@@ -89,7 +89,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          hajimari.io/icon: radarr
+          hajimari.io/icon: filmstrip
           hajimari.io/info: "Movie manager"
         className: internal
         hosts:

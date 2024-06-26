@@ -92,7 +92,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          hajimari.io/icon: sonarr
+          hajimari.io/icon: television-classic
           hajimari.io/info: "TV manager"
         className: internal
         hosts:

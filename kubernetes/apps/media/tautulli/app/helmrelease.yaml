@@ -100,7 +100,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          hajimari.io/icon: tautulli
+          hajimari.io/icon: theater
           hajimari.io/info: "Plex stats"
         className: internal
         hosts:

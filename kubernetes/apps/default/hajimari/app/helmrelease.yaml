@@ -27,7 +27,8 @@ spec:
       TZ: Europe/Paris
     hajimari:
       title: Apps
-      darkTheme: espresso
+      darkTheme: lime
+      lightTheme: paper
       alwaysTargetBlank: true
       defaultEnable: true
       namespaceSelector:
