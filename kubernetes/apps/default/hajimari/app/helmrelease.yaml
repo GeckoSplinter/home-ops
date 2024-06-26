@@ -35,6 +35,8 @@ spec:
         any: true
       name: "おかえりなさい"
       defaultSearchProvider: DuckDuckGo
+      showGreeting: false
+      showAppGroups: true
       customApps: []
         # - group: Home
         #   apps:
