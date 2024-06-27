@@ -42,6 +42,7 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          hajimari.io/icon: "fluent:iot-alert-16-regular"
         ingressClassName: internal
         hosts: ["alertmanager.${SECRET_DOMAIN}"]
         pathType: Prefix
