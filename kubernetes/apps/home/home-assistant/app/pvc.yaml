@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-config
+  name: home-assistant
   namespace: home
 spec:
   accessModes:
@@ -11,5 +11,3 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: longhorn
-  volumeMode: Filesystem
-  volumeName: pvc-4bb29543-b31f-435d-b9f8-00a225e1efe0

@@ -36,12 +36,15 @@ spec:
           app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.5.5
+              tag: 2024.7.1
             env:
               TZ: 'Europe/Paris'
               HASS_HTTP_TRUSTED_PROXY_1: 192.168.10.0/24
               HASS_HTTP_TRUSTED_PROXY_2: 192.168.42.0/24
               HASS_HTTP_TRUSTED_PROXY_3: 10.42.0.0/16
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
             probes: &probes
               liveness:
                 enabled: false
@@ -50,7 +53,9 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -75,13 +80,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 512Mi
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: home-assistant
@@ -117,27 +115,18 @@ spec:
                   port: code
     defaultPodOptions:
       securityContext:
+        runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
-        runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: controller/rflink
-      #           operator: Exists
+        seccompProfile: { type: RuntimeDefault }
     persistence:
       config:
-        existingClaim: home-assistant-config
+        existingClaim: home-assistant
         globalMounts:
           - path: /config
       tmp:
         type: emptyDir
         globalMounts:
           - path: :/tmp
-      # usb:
-      #   type: hostPath
-      #   hostPath: /dev/rflink
