@@ -50,9 +50,7 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              privileged: true
             resources:
               requests:
                 cpu: 10m
@@ -77,6 +75,13 @@ spec:
                 cpu: 10m
               limits:
                 memory: 512Mi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: home-assistant
@@ -112,12 +117,11 @@ spec:
                   port: code
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
+        runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
       # affinity:
       #   nodeAffinity:
       #     requiredDuringSchedulingIgnoredDuringExecution:
@@ -133,7 +137,7 @@ spec:
       tmp:
         type: emptyDir
         globalMounts:
-          - path: /tmp
+          - path: :/tmp
       # usb:
       #   type: hostPath
       #   hostPath: /dev/rflink
