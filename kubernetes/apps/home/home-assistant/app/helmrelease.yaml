@@ -97,16 +97,16 @@ spec:
         runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: controller/rflink
-                operator: Exists
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: controller/rflink
+      #           operator: Exists
     persistence:
       config:
         existingClaim: home-assistant-config
-      usb:
-        type: hostPath
-        hostPath: /dev/rflink
+      # usb:
+      #   type: hostPath
+      #   hostPath: /dev/rflink
