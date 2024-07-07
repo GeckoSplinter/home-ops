@@ -13,6 +13,9 @@ spec:
     pvcTemplate:
       accessModes:
         - ReadWriteOnce
+  superuserSecret:
+    name: cloudnative-pg-secret
+  enableSuperuserAccess: true
   nodeMaintenanceWindow:
     reusePVC: true
   resources:
