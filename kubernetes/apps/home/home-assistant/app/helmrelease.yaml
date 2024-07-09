@@ -45,6 +45,11 @@ spec:
             envFrom:
               - secretRef:
                   name: home-assistant-secret
+            ports:
+              - name: http
+                containerPort: 8123
+              - name: sonos
+                containerPort: 1400
             resources:
               requests:
                 cpu: 10m
@@ -70,12 +75,17 @@ spec:
                 memory: 512Mi
     service:
       app:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.42.70"
         controller: home-assistant
         ports:
           http:
             port: 8123
           code:
             port: 80
+          sonos:
+            port: 1400
     ingress:
       app:
         enabled: true
