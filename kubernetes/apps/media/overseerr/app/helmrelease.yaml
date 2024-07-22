@@ -85,6 +85,12 @@ spec:
           hajimari.io/info: "Movie and TV Show Requests"
         className: external
         hosts:
+          - host: "requests.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
           - host: "overseerr.${SECRET_DOMAIN}"
             paths:
               - path: /
