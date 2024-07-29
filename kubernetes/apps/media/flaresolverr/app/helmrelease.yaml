@@ -38,6 +38,8 @@ spec:
               TZ: Europe/Paris
               LOG_LEVEL: info
               PORT: &port 80
+              LANG: fr_FR
+              BROWSER_TIMEOUT: 95000
               PROMETHEUS_ENABLED: true
               PROMETHEUS_PORT: &metricsPort 8080
             probes:
