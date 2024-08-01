@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: network
-  path: ./kubernetes/apps/networking/external-svc/svc
+  path: ./kubernetes/apps/network/external-svc/svc
   prune: true
   sourceRef:
     kind: GitRepository
