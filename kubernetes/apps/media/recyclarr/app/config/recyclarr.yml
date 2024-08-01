@@ -3,6 +3,7 @@
 sonarr:
   sonarr:
     base_url: http://sonarr.media.svc.cluster.local
+    # api_key: !env_var SONARR__API_KEY
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
     quality_definition:
@@ -136,7 +137,7 @@ sonarr:
 radarr:
   radarr:
     base_url: http://radarr.media.svc.cluster.local
-    api_key: !env_var RADARR__API_KEY
+    # api_key: !env_var RADARR__API_KEY
     delete_old_custom_formats: true
     replace_existing_custom_formats: true
     quality_definition:
