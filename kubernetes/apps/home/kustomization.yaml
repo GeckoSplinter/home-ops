@@ -5,6 +5,6 @@ resources:
   - ./namespace.yaml
   - ./home-assistant/ks.yaml
   - ./home-assistant-old/ks.yaml
+  - ./zigbee2mqtt/ks.yaml
   # - ./mosquitto/ks.yaml
   # - ./node-red/ks.yaml
-  # - ./zigbee2mqtt/ks.yaml
