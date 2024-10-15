@@ -72,11 +72,6 @@ spec:
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
