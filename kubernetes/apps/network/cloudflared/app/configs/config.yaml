@@ -1,4 +1,7 @@
 ---
+warp-routing:
+  enabled: true
+
 originRequest:
   originServerName: "external.${SECRET_DOMAIN}"
 
