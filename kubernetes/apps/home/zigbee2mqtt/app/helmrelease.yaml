@@ -24,8 +24,6 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: mosquitto
-      namespace: home
     - name: longhorn
       namespace: longhorn-system
   values:
