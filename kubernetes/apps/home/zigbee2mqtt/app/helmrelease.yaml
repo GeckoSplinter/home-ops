@@ -96,13 +96,6 @@ spec:
         runAsNonRoot: true
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: controller/zigbee
-                operator: Exists
     service:
       app:
         controller: zigbee2mqtt
