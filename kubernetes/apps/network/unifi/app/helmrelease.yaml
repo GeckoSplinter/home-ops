@@ -72,6 +72,19 @@ spec:
             enabled: false
             protocol: UDP
             port: 5514
+    ingress:
+      app:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        className: internal
+        hosts:
+          - host: unifi.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     persistence:
       config:
         existingClaim: unifi-config
