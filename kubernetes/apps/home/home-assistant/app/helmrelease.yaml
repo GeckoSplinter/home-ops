@@ -50,6 +50,10 @@ spec:
                 containerPort: 8123
               - name: sonos
                 containerPort: 1400
+              # Needed for Shelly devices
+              - name: coiot
+                containerPort: 5683
+                protocol: UDP
             resources:
               requests:
                 cpu: 10m
@@ -86,6 +90,9 @@ spec:
             port: 80
           sonos:
             port: 1400
+          coiot:
+            port: 5683
+            protocol: UDP
     ingress:
       app:
         enabled: true
