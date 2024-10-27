@@ -97,8 +97,8 @@ spec:
       app:
         enabled: true
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: external
         hosts:
           - host: home.${SECRET_DOMAIN}
             paths:
