@@ -13,3 +13,15 @@ Each directory is optional and therefore might not created by default.
 - `controller/`: patches that are applied to the controller configurations
 - `worker/`: patches that are applied to the worker configurations
 - `${node-hostname}/`: patches that are applied to the node with the specified name
+
+
+## Extensions
+
+```yaml
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/iscsi-tools
+      - siderolabs/util-linux-tools
+
+```
