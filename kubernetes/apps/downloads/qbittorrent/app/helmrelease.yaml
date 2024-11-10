@@ -23,14 +23,6 @@ spec:
           configmap.reloader.stakater.com/reload: qbittorrent-dnsdist
           secret.reloader.stakater.com/reload: qbittorrent-secret
 
-        pod:
-          securityContext:
-            fsGroup: 2000
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 65542 # gladius:external-services
-          terminationGracePeriodSeconds: 120
-
         initContainers:
           dnsdist:
             image:
@@ -96,9 +88,6 @@ spec:
               limits:
                 memory: 8192Mi
             securityContext:
-              runAsUser: 2000
-              runAsGroup: 2000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -118,9 +107,6 @@ spec:
               CRON_SCHEDULE: "*/5 * * * *"
               LOG_TIMESTAMP: false
             securityContext:
-              runAsUser: 2000
-              runAsGroup: 2000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -130,6 +116,17 @@ spec:
     global:
       fullnameOverride: qbittorrent
     hostname: qbittorrent
+
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
