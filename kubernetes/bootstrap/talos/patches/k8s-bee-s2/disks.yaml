@@ -1,16 +1,16 @@
 machine:
   kubelet:
     extraMounts:
-      - destination: /var/mnt/hdd-1000
+      - destination: /var/mnt/nvme-2000
         type: bind
-        source: /var/mnt/hdd-1000
+        source: /var/mnt/nvme-2000
         options:
           - bind
           - rshared
           - rw
 
   disks:
-      - device: /dev/sda
+      - device: /dev/nvme1n1
         partitions:
-          - mountpoint: /var/mnt/hdd-1000
+          - mountpoint: /var/mnt/nvme-2000
 
