@@ -121,14 +121,14 @@ sonarr:
           - ddb8eaa9c85a549c50034d280539d54d # FR WEB Tier 01
           - a4c51febd4d8b2a0db10a3c974f21d92 # FR WEB Tier 02
           - dbfc0a4b5cb4cbd693311c4482ae9683 # FR WEB Tier 03
-        quality_profiles:
+        assign_scores_to:
           - name: Any
           - name: UHD-Fr
           - name: HD-Fr
       - trash_ids:
           - 7982e39789f17864f57b11f1996844f4 # Multi French
           - 2f3422339d185eb227a324644a2fbfca # FR Scene Groups
-        quality_profiles:
+        assign_scores_to:
           - name: HD-Fr
             score: 0
           - name: UHD-Fr
@@ -182,7 +182,7 @@ radarr:
     custom_formats:
       - trash_ids:
           - ff5bc9e8ce91d46c997ca3ac6994d6f8 # UHD FraMeSToR (set to 0, 1 or 3200)
-        quality_profiles:
+        assign_scores_to:
           - name: HD-Fr
             score: 1
           - name: UHD-Fr
@@ -237,12 +237,12 @@ radarr:
           - 57f34251344be2e283fc30e00e458be6 # FR HD Bluray Tier 02
           - 9790a618cec1aeac8ce75601a17ea40d # FR WEB Tier 01
           - 3c83a765f84239716bd5fd2d7af188f9 # FR WEB Tier 02
-        quality_profiles:
+        assign_scores_to:
           - name: UHD-Fr
           - name: HD-Fr
       - trash_ids:
         - d5f3a1afdb77e6b95e489f7654532d04 # Multi French 0
-        quality_profiles:
+        assign_scores_to:
           - name: UHD-Fr
             score: 0
           - name: HD-Fr
