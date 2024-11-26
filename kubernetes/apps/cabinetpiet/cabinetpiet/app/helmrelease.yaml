@@ -40,7 +40,7 @@ spec:
               pullPolicy: IfNotPresent
             ports:
               - name: http
-                containerPort: 8080
+                containerPort: &port 8080
             resources:
               requests:
                 cpu: 500m
@@ -57,6 +57,12 @@ spec:
                     path: /health
                     port: 8081
               readiness: *probes
+    service:
+      app:
+        controller: cabinetpiet
+        ports:
+          http:
+            port: *port
     ingress:
       app:
         enabled: true
