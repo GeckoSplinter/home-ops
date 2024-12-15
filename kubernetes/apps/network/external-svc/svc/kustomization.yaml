@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: network
 resources:
   - ./nas.yaml
-  - ./octopi.yaml
   - ./pihole.yaml
