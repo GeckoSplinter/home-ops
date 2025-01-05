@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
-              tag: 5.16.2.9534@sha256:77b7f347318ce28e0751c97db94cb24ca27949dac0b6adeead883701a6c19ff5
+              tag: 5.17.1.9561@sha256:ebc3c0e95ae7f8d5325179cbd51ac23cab1bcc10f141ba5c34cd13bc4cc8c52f
             env:
               TZ: Europe/Paris
               RADARR__INSTANCE_NAME: Radarr
