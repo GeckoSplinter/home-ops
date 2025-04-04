@@ -87,7 +87,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: api
+                  identifier: app
                   port: api
     persistence:
       config:
