@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: satisfactory
+  namespace: gaming
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+  values:
+    controllers:
+      server:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: wolveix/satisfactory-server
+              tag: v1.9.7
+            env:
+              TZ: 'Europe/Paris'
+              DEBUG: "false"
+              MAXPLAYERS: "8"
+              PGID: "1000"
+              PUID: "1000"
+              SKIPUPDATE: "false"
+              STEAMBETA: "false"
+              AUTOPAUSE: "true"
+            ports:
+              - name: api
+                containerPort: 7777
+                protocol: TCP
+              - name: game
+                containerPort: 7777
+                protocol: UDP
+              - name: messaging
+                containerPort: 8888
+                protocol: TCP
+            resources:
+              requests:
+                cpu: 1
+                memory: 8Gi
+              limits:
+                memory: 12Gi
+    service:
+      app:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: "192.168.42.90"
+        controller: server
+        ports:
+          api:
+            port: 7777
+          game:
+            port: 7777
+            protocol: UDP
+          messaging:
+            port: 8888
+    ingress:
+      app:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: external
+        hosts:
+          - host: satisfactory.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: api
+                  port: api
+    persistence:
+      config:
+        existingClaim: satisfactory-config
+        globalMounts:
+          - path: /config
+      gamefiles:
+        existingClaim: satisfactory-data
+        globalMounts:
+          - path: /config/gamefiles
