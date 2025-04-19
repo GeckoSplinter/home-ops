@@ -66,7 +66,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "192.168.42.90"
+          io.cilium/lb-ipam-ips: "192.168.42.91"
         controller: server
         ports:
           api:
