@@ -46,6 +46,8 @@ spec:
               SKIPUPDATE: "false"
               STEAMBETA: "true"
               AUTOPAUSE: "true"
+              SERVERGAMEPORT: "7778"
+              SERVERMESSAGINGPORT: "8889"
             ports:
               - name: api
                 containerPort: 7778
