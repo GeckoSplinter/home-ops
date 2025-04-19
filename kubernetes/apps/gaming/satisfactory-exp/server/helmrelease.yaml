@@ -44,7 +44,7 @@ spec:
               PGID: "1000"
               PUID: "1000"
               SKIPUPDATE: "false"
-              STEAMBETA: "false"
+              STEAMBETA: "true"
               AUTOPAUSE: "true"
             ports:
               - name: api
