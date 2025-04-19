@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: satisfactory--exp-data
+  name: satisfactory-exp-data
   namespace: gaming
 spec:
   accessModes:
