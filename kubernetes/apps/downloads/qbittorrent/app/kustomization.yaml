@@ -12,7 +12,7 @@ configMapGenerator:
   #     - ./config/Corefile
   - name: qbittorrent-dnsdist
     files:
-      - ./resources/dnsdist.conf
+      - ./config/dnsdist.conf
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
