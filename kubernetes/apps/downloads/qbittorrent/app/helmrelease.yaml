@@ -141,7 +141,7 @@ spec:
       app:
         className: internal
         annotations:
-          ext
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: qbit.${SECRET_DOMAIN}
             paths:
