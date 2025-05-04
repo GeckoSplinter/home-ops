@@ -20,7 +20,6 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          configmap.reloader.stakater.com/reload: qbittorrent-dnsdist
           secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
         pod:
           securityContext:
@@ -30,24 +29,18 @@ spec:
               - 65542 # gladius:external-services
 
         initContainers:
-          # coredns:
-          #   image:
-          #     repository: mirror.gcr.io/coredns/coredns
-          #     tag: 1.12.1
-          #   args:
-          #     - -conf
-          #     - /etc/coredns/Corefile
-          #   restartPolicy: Always
-          dnsdist:
+          coredns:
             image:
-              repository: docker.io/powerdns/dnsdist-19
-              tag: 1.9.9@sha256:3c50b8cf114b61f06a5b66319ab9c74c227072123c4e5871b7acbd21af5d097c
+              repository: mirror.gcr.io/coredns/coredns
+              tag: 1.12.1
+            args:
+              - -conf
+              - /etc/coredns/Corefile
             restartPolicy: Always
 
           gluetun:
             dependsOn:
-              # - coredns
-              - dnsdist
+              - coredns
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
@@ -70,9 +63,9 @@ spec:
               postStart:
                 exec:
                   command:
-                    - /bin/sh
-                    - -c
-                    - (ip rule del table 51820; ip -6 rule del table 51820) || true
+                    - "/bin/sh"
+                    - "-c"
+                    - "(ip rule del table 51820; ip -6 rule del table 51820) || true"
             resources:
               limits:
                 squat.ai/tun: "1"
@@ -93,7 +86,6 @@ spec:
               TZ: Europe/Paris
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
-              QBITTORRENT__BT_PORT: 55633
             probes:
               liveness: &probes
                 enabled: true
