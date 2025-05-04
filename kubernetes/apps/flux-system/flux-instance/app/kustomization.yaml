@@ -4,13 +4,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./helmrelease.yaml
+  - ./secret.sops.yaml
+  - ./ingress.yaml
+  - ./receiver.yaml
 configMapGenerator:
-  - name: flux-operator-values
+  - name: flux-instance-values
     files:
       - values.yaml=./helm/values.yaml
 configurations:
-<<<<<<< HEAD
   - ./helm/kustomizeconfig.yaml
-=======
-  - ./helm/kustomizeconfig.yaml
->>>>>>> 1527a80 (feat(flux-operator): yolo)
