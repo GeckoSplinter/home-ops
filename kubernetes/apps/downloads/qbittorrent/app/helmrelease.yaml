@@ -34,7 +34,7 @@ spec:
           dnsdist:
             image:
               repository: docker.io/powerdns/dnsdist-19
-              tag: 1.9.8
+              tag: 1.9.9
             restartPolicy: Always
 
           gluetun:
@@ -141,7 +141,7 @@ spec:
       app:
         className: internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          ext
         hosts:
           - host: qbit.${SECRET_DOMAIN}
             paths:
