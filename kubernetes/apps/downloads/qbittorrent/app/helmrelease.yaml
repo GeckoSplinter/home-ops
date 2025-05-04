@@ -87,7 +87,6 @@ spec:
               TZ: Europe/Paris
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
-              QBITTORRENT__BT_PORT: 55633
             probes:
               liveness:
                 enabled: true
