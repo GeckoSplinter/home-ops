@@ -20,8 +20,7 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          configmap.reloader.stakater.com/reload: qbittorrent-dnsdist
-          secret.reloader.stakater.com/reload: qbittorrent-secret
+          secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
         pod:
           securityContext:
             fsGroup: 2000
@@ -31,15 +30,18 @@ spec:
           terminationGracePeriodSeconds: 120
 
         initContainers:
-          dnsdist:
+          coredns:
             image:
-              repository: docker.io/powerdns/dnsdist-19
-              tag: 1.9:9
+              repository: mirror.gcr.io/coredns/coredns
+              tag: 1.12.1
+            args:
+              - -conf
+              - /etc/coredns/Corefile
             restartPolicy: Always
 
           gluetun:
             dependsOn:
-              - dnsdist
+              - coredns
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
@@ -131,6 +133,7 @@ spec:
                   secretKeyRef:
                     name: qbittorrent-secret
                     key: GLUETUN_CONTROL_SERVER_API_KEY
+              HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: &gluetunAuthPath /gluetun/auth.toml
               QBITTORRENT_HOST: localhost
               QBITTORRENT_WEBUI_PORT: *port
               CRON_ENABLED: true
@@ -201,12 +204,12 @@ spec:
             gluetun:
               - path: *gluetunAuthPath
                 subPath: auth.toml
-      dnsdist:
+      coredns:
         type: configMap
-        name: qbittorrent-dnsdist
+        name: qbittorrent-coredns
         advancedMounts:
           qbittorrent:
-            dnsdist:
-              - path: /etc/dnsdist/dnsdist.conf
-                subPath: dnsdist.conf
+            coredns:
+              - path: /etc/coredns/Corefile
+                subPath: Corefile
                 readOnly: true
