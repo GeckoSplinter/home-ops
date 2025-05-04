@@ -7,9 +7,12 @@ resources:
   - ./externalsecret.yaml
   - ./pvc.yaml
 configMapGenerator:
-  - name: qbittorrent-coredns
+  # - name: qbittorrent-coredns
+  #   files:
+  #     - ./config/Corefile
+  - name: qbittorrent-dnsdist
     files:
-      - ./config/Corefile
+      - ./config/dnsdist.conf
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
