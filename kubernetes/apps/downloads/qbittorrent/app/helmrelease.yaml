@@ -20,6 +20,7 @@ spec:
     controllers:
       qbittorrent:
         annotations:
+          configmap.reloader.stakater.com/reload: qbittorrent-dnsdist
           secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
         pod:
           securityContext:
@@ -27,21 +28,26 @@ spec:
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups:
               - 65542 # gladius:external-services
-          terminationGracePeriodSeconds: 120
 
         initContainers:
-          coredns:
+          # coredns:
+          #   image:
+          #     repository: mirror.gcr.io/coredns/coredns
+          #     tag: 1.12.1
+          #   args:
+          #     - -conf
+          #     - /etc/coredns/Corefile
+          #   restartPolicy: Always
+          dnsdist:
             image:
-              repository: mirror.gcr.io/coredns/coredns
-              tag: 1.12.1
-            args:
-              - -conf
-              - /etc/coredns/Corefile
+              repository: docker.io/powerdns/dnsdist-19
+              tag: 1.9.9@sha256:3c50b8cf114b61f06a5b66319ab9c74c227072123c4e5871b7acbd21af5d097c
             restartPolicy: Always
 
           gluetun:
             dependsOn:
-              - coredns
+              # - coredns
+              - dnsdist
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
@@ -204,12 +210,21 @@ spec:
             gluetun:
               - path: *gluetunAuthPath
                 subPath: auth.toml
-      coredns:
+      dnsdist:
         type: configMap
-        name: qbittorrent-coredns
+        name: qbittorrent-dnsdist
         advancedMounts:
           qbittorrent:
-            coredns:
-              - path: /etc/coredns/Corefile
-                subPath: Corefile
+            dnsdist:
+              - path: /etc/dnsdist/dnsdist.conf
+                subPath: dnsdist.conf
                 readOnly: true
+      # coredns:
+      #   type: configMap
+      #   name: qbittorrent-coredns
+      #   advancedMounts:
+      #     qbittorrent:
+      #       coredns:
+      #         - path: /etc/coredns/Corefile
+      #           subPath: Corefile
+      #           readOnly: true
