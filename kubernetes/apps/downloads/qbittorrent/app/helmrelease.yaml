@@ -20,7 +20,7 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          configmap.reloader.stakater.com/reload: qbittorrent-dnsdist
+          configmap.reloader.stakater.com/reload: qbittorrent-coredns
           secret.reloader.stakater.com/reload: qbittorrent-secret
 
         pod:
@@ -31,15 +31,18 @@ spec:
               - 65542 # gladius:external-services
 
         initContainers:
-          dnsdist:
+          coredns:
             image:
-              repository: docker.io/powerdns/dnsdist-19
-              tag: 1.9.9
+              repository: mirror.gcr.io/coredns/coredns
+              tag: 1.12.1
+            args:
+              - -conf
+              - /etc/coredns/Corefile
             restartPolicy: Always
 
           gluetun:
             dependsOn:
-              - dnsdist
+              - coredns
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
@@ -173,12 +176,12 @@ spec:
           qbittorrent:
             app:
               - path: /media
-      dnsdist:
+      coredns:
         type: configMap
-        name: qbittorrent-dnsdist
+        name: qbittorrent-coredns
         advancedMounts:
           qbittorrent:
-            dnsdist:
-              - path: /etc/dnsdist/dnsdist.conf
-                subPath: dnsdist.conf
+            coredns:
+              - path: /etc/coredns/Corefile
+                subPath: Corefile
                 readOnly: true
