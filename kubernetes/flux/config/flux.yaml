@@ -18,7 +18,11 @@ metadata:
 spec:
   interval: 10m
   path: ./
+<<<<<<< HEAD
   prune: false
+=======
+  prune: true
+>>>>>>> 247b441 (add back the previous flux before the migration)
   wait: true
   sourceRef:
     kind: OCIRepository
