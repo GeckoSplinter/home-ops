@@ -5,3 +5,4 @@ resources:
   - ./namespace.yaml
   - ./weave-gitops/ks.yaml
   - ./webhooks/ks.yaml
+  - ./flux-operator/ks.yaml
