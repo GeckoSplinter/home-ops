@@ -33,8 +33,4 @@ spec:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-<<<<<<< HEAD
       name: flux-operator-values
-=======
-      name: flux-operator-values
->>>>>>> 1527a80 (feat(flux-operator): yolo)
