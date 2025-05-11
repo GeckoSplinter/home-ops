@@ -11,6 +11,10 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/cert-manager/cert-manager/app
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -33,6 +37,10 @@ spec:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
