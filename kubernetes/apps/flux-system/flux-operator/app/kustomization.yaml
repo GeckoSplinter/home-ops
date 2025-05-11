@@ -9,8 +9,4 @@ configMapGenerator:
     files:
       - values.yaml=./helm/values.yaml
 configurations:
-<<<<<<< HEAD
   - ./helm/kustomizeconfig.yaml
-=======
-  - ./helm/kustomizeconfig.yaml
->>>>>>> 1527a80 (feat(flux-operator): yolo)
