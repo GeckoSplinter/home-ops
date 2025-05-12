@@ -10,7 +10,7 @@ ingress:
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
   - hostname: "*.${SECRET_DOMAIN}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
-  - hostname: "${SECRET_WEB_CABINET_DOMAIN}"
+  - hostname: "${SECRET_DOMAIN_WEB_CABINET}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
-    originServerName: "external.${SECRET_WEB_CABINET_DOMAIN}"
+    originServerName: "external.${SECRET_DOMAIN_WEB_CABINET}"
   - service: http_status:404
