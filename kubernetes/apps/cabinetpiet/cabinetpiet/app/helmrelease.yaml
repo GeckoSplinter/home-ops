@@ -67,10 +67,10 @@ spec:
       app:
         enabled: true
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_WEB_CABINET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_CABINET_WEB}"
         className: external
         hosts:
-          - host: ${SECRET_WEB_CABINET_DOMAIN}
+          - host: ${SECRET_DOMAIN_CABINET_WEB}
             paths:
               - path: /
                 service:
