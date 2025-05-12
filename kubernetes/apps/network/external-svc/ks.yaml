@@ -8,6 +8,10 @@ spec:
   targetNamespace: network
   path: ./kubernetes/apps/network/external-svc/svc
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system

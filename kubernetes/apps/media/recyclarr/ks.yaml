@@ -7,6 +7,10 @@ metadata:
 spec:
   path: ./kubernetes/apps/media/recyclarr/app
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system

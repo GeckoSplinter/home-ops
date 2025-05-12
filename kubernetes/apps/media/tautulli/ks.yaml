@@ -8,6 +8,10 @@ spec:
   targetNamespace: media
   path: ./kubernetes/apps/media/tautulli/app
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system

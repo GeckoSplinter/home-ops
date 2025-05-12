@@ -13,6 +13,10 @@ spec:
     - name: cert-manager-issuers
   path: ./kubernetes/apps/network/ingress-nginx/certificates
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -36,6 +40,10 @@ spec:
     - name: ingress-nginx-certificates
   path: ./kubernetes/apps/network/ingress-nginx/internal
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -59,6 +67,10 @@ spec:
     - name: ingress-nginx-certificates
   path: ./kubernetes/apps/network/ingress-nginx/external
   prune: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
