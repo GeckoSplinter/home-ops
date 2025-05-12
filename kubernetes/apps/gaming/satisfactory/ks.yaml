@@ -10,6 +10,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/gaming/satisfactory/server
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: false
   sourceRef:
     kind: GitRepository
