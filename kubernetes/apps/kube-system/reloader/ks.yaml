@@ -10,6 +10,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kube-system/reloader/app
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: false
   sourceRef:
     kind: GitRepository
