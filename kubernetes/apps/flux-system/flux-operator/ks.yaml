@@ -14,18 +14,18 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: *namespace
-  interval: 1h
   path: ./kubernetes/apps/flux-system/flux-operator/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
   prune: false
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: false
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m

@@ -1,11 +1,12 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app ingress-nginx-certificates
-  namespace: flux-system
+  namespace: &namespace network
 spec:
-  targetNamespace: network
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -23,22 +24,24 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app ingress-nginx-internal
-  namespace: flux-system
+  namespace: &namespace network
 spec:
-  targetNamespace: network
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: ingress-nginx-certificates
+      namespace: *namespace
   path: ./kubernetes/apps/network/ingress-nginx/internal
   prune: false
   postBuild:
@@ -50,22 +53,24 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app ingress-nginx-external
-  namespace: flux-system
+  namespace: &namespace network
 spec:
-  targetNamespace: network
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: ingress-nginx-certificates
+      namespace: *namespace
   path: ./kubernetes/apps/network/ingress-nginx/external
   prune: false
   postBuild:
@@ -77,6 +82,6 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  interval: 1h
+  retryInterval: 2m
+  timeout: 15m
