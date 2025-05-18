@@ -29,7 +29,7 @@ spec:
   interval: 5m
   chartRef:
     kind: OCIRepository
-    name: grafana
+    name: longhorn
   install:
     remediation:
       retries: -1
