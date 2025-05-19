@@ -200,14 +200,12 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-    route:
-      main:
-        enabled: true
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
+    ingress:
+      enabled: true
+      host: ["grafana.${SECRET_DOMAIN}"]
+      annotations:
+        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+      ingressClassName: internal
     persistence:
       enabled: false
     testFramework:
