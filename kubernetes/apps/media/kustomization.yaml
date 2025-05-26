@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: media
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./app-arr-secret.sops.yaml
   - ./flaresolverr/ks.yaml
