@@ -1,5 +1,8 @@
 ---
 autoDirectNodeRoutes: true
+bandwidthManager:
+  enabled: true
+  bbr: true
 bpf:
   masquerade: true
   # Ref: https://github.com/siderolabs/talos/issues/10002
@@ -18,7 +21,10 @@ devices: enp+
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  rollOutPods: true
+  prometheus:
+    serviceMonitor:
+      enabled: true
 dashboards:
   enabled: true
   annotations:
@@ -32,6 +38,8 @@ k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+bgpControlPlane:
+  enabled: true
 l2announcements:
   enabled: true
 loadBalancer:
@@ -47,7 +55,7 @@ operator:
     enabled: true
     serviceMonitor:
       enabled: true
-  replicas: 1
+  replicas: 2
   rollOutPods: true
 prometheus:
   enabled: true
