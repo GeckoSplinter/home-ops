@@ -1,12 +1,10 @@
 ---
 autoDirectNodeRoutes: true
 bandwidthManager:
-  enabled: true
+  enabled: false
   bbr: true
 bpf:
   masquerade: true
-  # Ref: https://github.com/siderolabs/talos/issues/10002
-  hostLegacyRouting: true
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
