@@ -5,5 +5,7 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./hajimari/ks.yaml
+  - ./echo-server/ks.yaml
