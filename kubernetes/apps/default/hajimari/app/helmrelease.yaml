@@ -5,22 +5,16 @@ kind: HelmRelease
 metadata:
   name: hajimari
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: hajimari
-      version: 2.0.2
-      sourceRef:
-        kind: HelmRepository
-        name: hajimari
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     env:
@@ -36,7 +30,8 @@ spec:
       name: "おかえりなさい"
       defaultSearchProvider: DuckDuckGo
       showAppGroups: true
-      customApps: []
+      customApps:
+        []
         # - group: Home
         #   apps:
         #     - name: Home Assistant
@@ -70,17 +65,17 @@ spec:
               url: "https://www.primevideo.com"
             - name: Spotify
               url: "https://open.spotify.com/browse"
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          hajimari.io/enable: "false"
-        hosts:
-          - host: hajimari.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
     persistence:

@@ -107,11 +107,11 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         envoy:
-           # renovate: depName="Envoy Proxy Monitoring gRPC"
-           gnetId: 23239
-           revision: 1
-           datasource:
-             - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
+          # renovate: depName="Envoy Proxy Monitoring gRPC"
+          gnetId: 23239
+          revision: 1
+          datasource:
+            - { name: DS_AFRANET_PROMETHEUS, value: Prometheus }
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -200,12 +200,14 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      hosts: ["grafana.${SECRET_DOMAIN}"]
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-      ingressClassName: internal
+    route:
+      main:
+        enabled: true
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     persistence:
       enabled: false
     testFramework:
