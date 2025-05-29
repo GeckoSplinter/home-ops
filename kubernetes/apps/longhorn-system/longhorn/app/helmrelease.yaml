@@ -42,11 +42,4 @@ spec:
     defaultSettings:
       backupTarget: "${SECRET_LONGHORN_BACKUP_TARGET}"
     ingress:
-      enabled: true
-      ingressClassName: internal
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        hajimari.io/icon: "storage"
-        hajimari.io/name: "Longhorn"
-        hajimari.io/description: "Volume CSI"
-      host: "longhorn.${SECRET_DOMAIN}"
+      enabled: false
