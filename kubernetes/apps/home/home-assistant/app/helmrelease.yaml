@@ -6,23 +6,16 @@ metadata:
   name: home-assistant
   namespace: home
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
-    createNamespace: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   dependsOn:
     - name: longhorn
@@ -38,7 +31,7 @@ spec:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2025.5.3
             env:
-              TZ: 'Europe/Paris'
+              TZ: "Europe/Paris"
               HASS_HTTP_TRUSTED_PROXY_1: 192.168.10.0/24
               HASS_HTTP_TRUSTED_PROXY_2: 192.168.42.0/24
               HASS_HTTP_TRUSTED_PROXY_3: 10.42.0.0/16
@@ -47,7 +40,7 @@ spec:
                   name: home-assistant-secret
             ports:
               - name: http
-                containerPort: 8123
+                containerPort: &port 8123
               - name: sonos
                 containerPort: 1400
               # Needed for Shelly devices
@@ -65,13 +58,18 @@ spec:
               tag: 4.100.2
             env:
               TZ: Europe/Paris
-            args: [
-              "--auth", "none",
-              "--user-data-dir", "/config/.vscode",
-              "--extensions-dir", "/config/.vscode",
-              "--port", "80",
-              "/config"
-            ]
+            args:
+              [
+                "--auth",
+                "none",
+                "--user-data-dir",
+                "/config/.vscode",
+                "--extensions-dir",
+                "/config/.vscode",
+                "--port",
+                "80",
+                "/config",
+              ]
             resources:
               requests:
                 cpu: 10m
@@ -93,31 +91,27 @@ spec:
           coiot:
             port: 5683
             protocol: UDP
-    ingress:
+    route:
       app:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        className: external
-        hosts:
-          - host: home.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
       code:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: hass-code.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code
+        hostnames: ["hass-code.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: code
     persistence:
       config:
         existingClaim: home-assistant

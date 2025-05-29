@@ -6,22 +6,16 @@ metadata:
   name: cabinetpiet
   namespace: cabinetpiet
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     defaultPodOptions:
@@ -63,16 +57,16 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_WEB_CABINET}"
-        className: external
-        hosts:
-          - host: ${SECRET_DOMAIN_WEB_CABINET}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "${SECRET_DOMAIN_WEB_CABINET}"
+          - "www.${SECRET_DOMAIN_WEB_CABINET}"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
