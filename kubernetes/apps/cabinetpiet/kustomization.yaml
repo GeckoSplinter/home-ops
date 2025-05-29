@@ -5,5 +5,6 @@ kind: Kustomization
 namespace: cabinetpiet
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./cabinetpiet/ks.yaml
