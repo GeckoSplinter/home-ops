@@ -14,6 +14,10 @@ cgroup:
 cluster:
   id: 1
   name: "home-ops"
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
 devices: enp+
 endpointRoutes:
   enabled: true
