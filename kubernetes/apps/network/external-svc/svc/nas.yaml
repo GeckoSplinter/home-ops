@@ -10,16 +10,23 @@ spec:
       port: 443
       targetPort: 443
 ---
-apiVersion: v1
-kind: Endpoints
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
 metadata:
-  name: nas
-  namespace: network
-subsets:
+  name: &service nas
+  labels:
+    kubernetes.io/service-name: *service
+addressType: IPv4
+ports:
+  - name: https
+    protocol: TCP
+    port: 443
+endpoints:
   - addresses:
-      - ip: 192.168.42.10
-    ports:
-      - port: 443
+      - "192.168.42.10"
+    conditions:
+      ready: true
+    hostname: *service
 ---
 # yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
