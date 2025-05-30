@@ -111,7 +111,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: code
+                port: 80
     persistence:
       config:
         existingClaim: home-assistant
