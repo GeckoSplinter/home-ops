@@ -76,7 +76,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: http
+                port: 8443
     persistence:
       config:
         existingClaim: unifi-config
