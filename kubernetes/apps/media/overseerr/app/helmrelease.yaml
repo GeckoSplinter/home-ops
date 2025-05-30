@@ -77,7 +77,7 @@ spec:
           - "requests.${SECRET_DOMAIN}"
           - "overseerr.${SECRET_DOMAIN}"
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
