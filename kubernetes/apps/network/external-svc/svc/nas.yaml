@@ -1,25 +1,4 @@
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: nas
-  namespace: network
-  annotations:
-    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-spec:
-  ingressClassName: internal
-  rules:
-  - host: nas.${SECRET_DOMAIN}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nas
-            port:
-              number: 443
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -41,3 +20,20 @@ subsets:
       - ip: 192.168.42.10
     ports:
       - port: 443
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: nas
+spec:
+  hostnames: ["nas.gecko.ninja"]
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: nas
+          namespace: network
+          port: 443
