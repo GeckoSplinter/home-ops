@@ -40,12 +40,12 @@ spec:
                   name: home-assistant-secret
             ports:
               - name: http
-                containerPort: 8123
+                containerPort: &port 8123
               - name: sonos
-                containerPort: 1400
+                containerPort: &portSonos 1400
               # Needed for Shelly devices
               - name: coiot
-                containerPort: 5683
+                containerPort: &portCoiot 5683
                 protocol: UDP
             resources:
               requests:
@@ -83,13 +83,13 @@ spec:
         controller: home-assistant
         ports:
           http:
-            port: 8123
+            port: *port
           code:
-            port: 80
+            port: &portCode 80
           sonos:
-            port: 1400
+            port: *portSonos
           coiot:
-            port: 5683
+            port: *portCoiot
             protocol: UDP
     route:
       app:
@@ -111,7 +111,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: 80
+                port: *portCode
     persistence:
       config:
         existingClaim: home-assistant
