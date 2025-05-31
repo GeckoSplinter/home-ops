@@ -6,6 +6,8 @@ metadata:
   name: external
   annotations:
     external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+  labels:
+    external-dns: enabled
 spec:
   gatewayClassName: cilium
   addresses:
