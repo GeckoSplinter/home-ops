@@ -6,4 +6,5 @@ resources:
   - ./certificate.yaml
   - ./external.yaml
   - ./internal.yaml
+  - ./cabinet.yaml
   - ./redirect.yaml
