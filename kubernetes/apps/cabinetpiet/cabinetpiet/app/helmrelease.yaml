@@ -63,9 +63,9 @@ spec:
           - "${SECRET_DOMAIN_WEB_CABINET}"
           - "www.${SECRET_DOMAIN_WEB_CABINET}"
         parentRefs:
-          - name: external
+          - name: cabinet
             namespace: kube-system
-            sectionName: https-cabinet
+            sectionName: https
         rules:
           - backendRefs:
               - identifier: app
