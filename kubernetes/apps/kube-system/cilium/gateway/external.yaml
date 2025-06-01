@@ -35,21 +35,3 @@ spec:
         certificateRefs:
           - kind: Secret
             name: gecko-ninja-tls
-    - name: http-cabinet
-      protocol: HTTP
-      port: 80
-      hostname: "*.cabinet-piet.fr"
-      allowedRoutes:
-        namespaces:
-          from: Same
-    - name: https-cabinet
-      protocol: HTTPS
-      port: 443
-      hostname: "*.cabinet-piet.fr"
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: cabinet-piet-tls
