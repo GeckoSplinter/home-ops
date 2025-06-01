@@ -11,6 +11,9 @@ ingress:
   - hostname: "*.${SECRET_DOMAIN}"
     service: *svc
   - hostname: "${SECRET_DOMAIN_WEB_CABINET}"
-    service: https://cilium-gateway-cabinet.kube-system.svc.cluster.local
+    service: &svc_cabinet https://cilium-gateway-cabinet.kube-system.svc.cluster.local
+    originServerName: "external.${SECRET_DOMAIN_WEB_CABINET}"
+  - hostname: "*.${SECRET_DOMAIN_WEB_CABINET}"
+    service: *svc_cabinet
     originServerName: "external.${SECRET_DOMAIN_WEB_CABINET}"
   - service: http_status:404
