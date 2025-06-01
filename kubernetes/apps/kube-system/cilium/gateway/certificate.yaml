@@ -23,4 +23,7 @@ spec:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: ${SECRET_DOMAIN_WEB_CABINET}
-  dnsNames: ["${SECRET_DOMAIN_WEB_CABINET}", "*.${SECRET_DOMAIN_WEB_CABINET}"]
+  dnsNames:
+    - "${SECRET_DOMAIN_WEB_CABINET}"
+    - "*.${SECRET_DOMAIN_WEB_CABINET}"
+    - "external.${SECRET_DOMAIN}"
