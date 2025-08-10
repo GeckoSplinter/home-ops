@@ -1,2 +1,2 @@
-makejinja==2.8.0
+makejinja==2.8.1
 netaddr==1.3.0
