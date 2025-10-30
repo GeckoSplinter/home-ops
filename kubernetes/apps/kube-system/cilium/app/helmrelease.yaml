@@ -65,7 +65,6 @@ spec:
           enabled: true
       replicas: 1
       rollOutPods: true
-      tolerations: []
     prometheus:
       enabled: true
       serviceMonitor:
