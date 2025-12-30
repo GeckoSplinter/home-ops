@@ -11,5 +11,3 @@ spec:
     requests:
       storage: 25Gi
   storageClassName: longhorn
-  volumeMode: Filesystem
-  volumeName: pvc-4a5f70ef-c200-42d1-9172-4055254d9133
