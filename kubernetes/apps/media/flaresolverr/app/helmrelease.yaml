@@ -26,13 +26,9 @@ spec:
         containers:
           app:
             image:
-              # repository: ghcr.io/flaresolverr/flaresolverr
-              # tag: v3.3.21
-              # TEMP issue with the image using community patch until resolved
-              repository: 21hsmw/flaresolverr
-              tag: nodriver
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: v3.4.6
             env:
-              DRIVER: nodriver
               TZ: Europe/Paris
               LOG_LEVEL: info
               PORT: &port 80
