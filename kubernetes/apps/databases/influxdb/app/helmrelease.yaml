@@ -34,7 +34,7 @@ spec:
     fullnameOverride: "influxdb"
     image:
       repository: influxdb
-      tag: 2.7.12
+      tag: 2.8.0
 
     pdb:
       create: false
