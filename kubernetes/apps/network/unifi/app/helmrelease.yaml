@@ -35,6 +35,9 @@ spec:
               UNIFI_STDOUT: "true"
               JVM_INIT_HEAP_SIZE:
               JVM_MAX_HEAP_SIZE: 1024M
+              CERTNAME: tls.crt
+              CERT_PRIVATE_NAME: tls.key
+              CERT_IS_CHAIN: "true"
             resources:
               requests:
                 memory: 2Gi
@@ -97,18 +100,23 @@ spec:
         existingClaim: unifi-config
         globalMounts:
           - path: /unifi
-      # cert:
-      #   type: secret
-      #   name: "${SECRET_EXTERNAL_DOMAIN/./-}-unifi"
-      #   advancedMounts:
-      #     unifi:
-      #       app:
-      #         - path: /unifi/cert/cert.pem
-      #           subPath: tls.crt
-      #           readOnly: true
-      #         - path: /unifi/cert/privkey.pem
-      #           subPath: tls.key
-      #           readOnly: true
-      #         - path: /unifi/data/keystore
-      #           subPath: keystore.jks
-      #           readOnly: false
+      init-scripts:
+        type: configMap
+        name: unifi-init-scripts
+        defaultMode: 0755
+        advancedMounts:
+          unifi:
+            app:
+              - path: /unifi/init.d
+      cert:
+        type: secret
+        name: unifi-tls
+        advancedMounts:
+          unifi:
+            app:
+              - path: /unifi/cert/tls.crt
+                subPath: tls.crt
+                readOnly: true
+              - path: /unifi/cert/tls.key
+                subPath: tls.key
+                readOnly: true

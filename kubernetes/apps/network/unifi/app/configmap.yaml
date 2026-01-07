@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-init-scripts
+  namespace: network
+data:
+  99-ucore-workaround.sh: |
+    #!/bin/bash
+    # Workaround for ULP manifest connection error
+    # This creates a simple HTTP server on port 9080 that responds to the ucore manifest request
+
+    echo "Starting UCore manifest workaround HTTP server on port 9080..."
+
+    # Kill any existing process on port 9080
+    pkill -f "nc.*9080" 2>/dev/null || true
+
+    # Create a simple HTTP server using socat that responds with empty JSON
+    (
+      while true; do
+        echo -e "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 2\r\n\r\n{}" | nc -l -p 9080 -q 1
+        sleep 0.1
+      done
+    ) &
+
+    echo "UCore manifest workaround started (PID: $!)"
