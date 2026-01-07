@@ -47,7 +47,7 @@ spec:
         controller: *app
         type: LoadBalancer
         externalTrafficPolicy: Local
-        loadBalancerIP: 192.168.41.71
+        loadBalancerIP: 192.168.42.71
         ports:
           https:
             port: &port 8443
