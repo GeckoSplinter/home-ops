@@ -6,7 +6,7 @@ metadata:
   name: &app envoy-gateway-gateways
   namespace: flux-system
 spec:
-  targetNamespace: envoy-gateway-system
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

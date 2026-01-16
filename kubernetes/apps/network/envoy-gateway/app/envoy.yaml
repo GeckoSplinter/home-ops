@@ -4,7 +4,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
   name: envoy
-  namespace: envoy-gateway-system
+  namespace: network
 spec:
   logging:
     level:
@@ -47,4 +47,4 @@ spec:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
     name: envoy
-    namespace: envoy-gateway-system
+    namespace: network
