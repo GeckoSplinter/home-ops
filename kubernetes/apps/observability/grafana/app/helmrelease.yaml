@@ -205,8 +205,8 @@ spec:
         enabled: true
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: network
             sectionName: https
     persistence:
       enabled: false

@@ -3,35 +3,39 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: external
+  name: external-envoy
+  namespace: network
   annotations:
     external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
   labels:
     external-dns: enabled
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy-gateway
   addresses:
     - type: IPAddress
       value: 192.168.42.81
   infrastructure:
     annotations:
+      lbipam.cilium.io/ips: "192.168.42.81"
       external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
   listeners:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.gecko.ninja"
+      hostname: "*.${SECRET_DOMAIN}"
       allowedRoutes:
         namespaces:
-          from: Same
+          from: All
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.gecko.ninja"
+      hostname: "*.${SECRET_DOMAIN}"
       allowedRoutes:
         namespaces:
           from: All
       tls:
+        mode: Terminate
         certificateRefs:
           - kind: Secret
             name: gecko-ninja-tls
+            namespace: kube-system

@@ -3,33 +3,37 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: cabinet
+  name: internal-envoy
+  namespace: network
   annotations:
-    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_WEB_CABINET}"
-  labels:
-    external-dns: enabled
+    external-dns.alpha.kubernetes.io/target: &hostname "internal.${SECRET_DOMAIN}"
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy-gateway
   addresses:
     - type: IPAddress
-      value: 192.168.42.65
+      value: 192.168.42.80
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN_WEB_CABINET}"
+      lbipam.cilium.io/ips: "192.168.42.80"
+      external-dns.alpha.kubernetes.io/hostname: *hostname
   listeners:
     - name: http
       protocol: HTTP
       port: 80
+      hostname: "*.${SECRET_DOMAIN}"
       allowedRoutes:
         namespaces:
-          from: Same
+          from: All
     - name: https
       protocol: HTTPS
       port: 443
+      hostname: "*.${SECRET_DOMAIN}"
       allowedRoutes:
         namespaces:
           from: All
       tls:
+        mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: cabinet-piet-tls
+            name: gecko-ninja-tls
+            namespace: kube-system

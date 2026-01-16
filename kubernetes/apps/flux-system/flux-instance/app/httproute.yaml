@@ -5,10 +5,10 @@ kind: HTTPRoute
 metadata:
   name: github-webhook
 spec:
-  hostnames: ["flux-webhook.gecko.ninja"]
+  hostnames: ["flux-webhook.${SECRET_DOMAIN}"]
   parentRefs:
-    - name: external
-      namespace: kube-system
+    - name: external-envoy
+      namespace: network
       sectionName: https
   rules:
     - backendRefs:

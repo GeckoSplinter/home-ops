@@ -48,7 +48,6 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: "192.168.42.71"
-          external-dns.alpha.kubernetes.io/hostname: "unifi.${SECRET_DOMAIN}"
         ports:
           https:
             port: &port 8443
@@ -81,6 +80,20 @@ spec:
             enabled: true
             port: 10001
             protocol: UDP
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal-envoy
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+            timeouts:
+              request: 0s # websocket, never time out
+              backendRequest: 0s # websocket, never time out
     persistence:
       config:
         enabled: true
