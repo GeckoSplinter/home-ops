@@ -34,10 +34,10 @@ kind: HTTPRoute
 metadata:
   name: nas
 spec:
-  hostnames: ["nas.gecko.ninja"]
+  hostnames: ["nas.${SECRET_DOMAIN}"]
   parentRefs:
-    - name: internal
-      namespace: kube-system
+    - name: internal-envoy
+      namespace: envoy-gateway-system
       sectionName: https
   rules:
     - backendRefs:
