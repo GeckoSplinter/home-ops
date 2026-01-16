@@ -95,8 +95,8 @@ spec:
       app:
         hostnames: ["home.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: external-envoy
+            namespace: envoy-gateway-system
             sectionName: https
         rules:
           - backendRefs:
@@ -105,8 +105,8 @@ spec:
       code:
         hostnames: ["hass-code.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: internal-envoy
+            namespace: envoy-gateway-system
             sectionName: https
         rules:
           - backendRefs:

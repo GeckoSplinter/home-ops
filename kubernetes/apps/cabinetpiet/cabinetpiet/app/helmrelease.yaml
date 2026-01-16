@@ -63,8 +63,8 @@ spec:
           - "${SECRET_DOMAIN_WEB_CABINET}"
           - "www.${SECRET_DOMAIN_WEB_CABINET}"
         parentRefs:
-          - name: cabinet
-            namespace: kube-system
+          - name: cabinet-envoy
+            namespace: envoy-gateway-system
             sectionName: https
         rules:
           - backendRefs:

@@ -76,8 +76,8 @@ spec:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: external-envoy
+            namespace: envoy-gateway-system
             sectionName: https
         rules:
           - backendRefs:
