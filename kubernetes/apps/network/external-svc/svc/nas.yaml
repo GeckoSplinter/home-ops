@@ -37,7 +37,7 @@ spec:
   hostnames: ["nas.${SECRET_DOMAIN}"]
   parentRefs:
     - name: internal-envoy
-      namespace: envoy-gateway-system
+      namespace: network
       sectionName: https
   rules:
     - backendRefs:

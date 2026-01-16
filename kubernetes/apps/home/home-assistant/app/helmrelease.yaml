@@ -96,7 +96,7 @@ spec:
         hostnames: ["home.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external-envoy
-            namespace: envoy-gateway-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
@@ -106,7 +106,7 @@ spec:
         hostnames: ["hass-code.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal-envoy
-            namespace: envoy-gateway-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

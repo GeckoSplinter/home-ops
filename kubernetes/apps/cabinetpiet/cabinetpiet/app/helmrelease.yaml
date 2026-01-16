@@ -64,7 +64,7 @@ spec:
           - "www.${SECRET_DOMAIN_WEB_CABINET}"
         parentRefs:
           - name: cabinet-envoy
-            namespace: envoy-gateway-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

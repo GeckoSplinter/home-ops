@@ -86,7 +86,7 @@ spec:
           hostnames: ["prometheus.${SECRET_DOMAIN}"]
           parentRefs:
             - name: internal-envoy
-              namespace: envoy-gateway-system
+              namespace: network
               sectionName: https
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
