@@ -38,4 +38,4 @@ spec:
         certificateRefs:
           - kind: Secret
             name: gecko-ninja-tls
-            namespace: kube-system
+            namespace: network
