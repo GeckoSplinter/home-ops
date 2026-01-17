@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./cabinet.yaml
   - ./certificate.yaml
+  - ./envoy.yaml
   - ./external.yaml
   - ./internal.yaml
   - ./redirect.yaml
