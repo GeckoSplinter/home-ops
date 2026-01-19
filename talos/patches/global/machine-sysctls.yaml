@@ -1,7 +1,12 @@
 machine:
   sysctls:
     fs.inotify.max_user_watches: "1048576" # Watchdog
-    fs.inotify.max_user_instances: "8192"  # Watchdog
+    fs.inotify.max_user_instances: "8192" # Watchdog
     net.core.rmem_max: "7500000" # Cloudflared | QUIC
     net.core.wmem_max: "7500000" # Cloudflared | QUIC
+    net.ipv4.neigh.default.gc_thresh1: "4096" # ARP cache
+    net.ipv4.neigh.default.gc_thresh2: "8192" # ARP cache
+    net.ipv4.neigh.default.gc_thresh3: "16384" # ARP cache
+    net.ipv4.tcp_slow_start_after_idle: "0" # TCP performance
+    user.max_user_namespaces: "11255" # User namespaces
     vm.nr_hugepages: "1024" # related to Storage on Talos
