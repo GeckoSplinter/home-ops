@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: gaming
 components:
   - ../../components/common
-resources:
-  - ./satisfactory/ks.yaml
+resources: []
