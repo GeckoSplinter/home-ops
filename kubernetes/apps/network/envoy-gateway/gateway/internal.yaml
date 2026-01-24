@@ -7,8 +7,6 @@ metadata:
   namespace: network
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname "internal.${SECRET_DOMAIN}"
-  labels:
-    external-dns: enabled
 spec:
   gatewayClassName: envoy-gateway
   addresses:
