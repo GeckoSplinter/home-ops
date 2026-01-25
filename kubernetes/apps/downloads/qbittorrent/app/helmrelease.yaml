@@ -30,7 +30,7 @@ spec:
             supplementalGroups:
               - 65542 # gladius:external-services
 
-        initContainers:
+        containers:
           gluetun:
             image:
               repository: ghcr.io/qdm12/gluetun
@@ -60,14 +60,15 @@ spec:
             resources:
               limits:
                 squat.ai/tun: "1"
-            restartPolicy: Always
+              requests:
+                squat.ai/tun: "1"
             securityContext:
               capabilities:
                 add:
                   - NET_ADMIN
               allowPrivilegeEscalation: false
 
-        containers:
+
           app:
             nameOverride: qbittorrent
             image:
