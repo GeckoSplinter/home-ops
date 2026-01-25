@@ -57,9 +57,13 @@ spec:
                     - -c
                     - (ip rule del table 51820; ip -6 rule del table 51820) || true
             resources:
-              limits:
-                squat.ai/tun: "1"
               requests:
+                cpu: 50m
+                memory: 128Mi
+                squat.ai/tun: "1"
+              limits:
+                cpu: 500m
+                memory: 512Mi
                 squat.ai/tun: "1"
             securityContext:
               capabilities:
@@ -81,23 +85,28 @@ spec:
               liveness:
                 enabled: true
                 spec:
-                  timeoutSeconds: 5
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
               readiness:
                 enabled: true
                 spec:
-                  timeoutSeconds: 5
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
               startup:
                 enabled: true
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
-                  timeoutSeconds: 5
+                  timeoutSeconds: 10
             resources:
               requests:
-                cpu: 150m
-                memory: 2048Mi
+                cpu: 500m
+                memory: 4Gi
               limits:
-                memory: 8192Mi
+                cpu: 4000m
+                memory: 16Gi
             securityContext:
               runAsUser: 2000
               runAsGroup: 2000
