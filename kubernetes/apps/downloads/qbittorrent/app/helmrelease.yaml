@@ -20,7 +20,6 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          configmap.reloader.stakater.com/reload: qbittorrent-coredns
           secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
 
         pod:
