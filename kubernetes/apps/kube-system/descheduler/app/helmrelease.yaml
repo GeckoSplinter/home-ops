@@ -72,21 +72,6 @@ spec:
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingNodeTaints
-        - name: "PodLifeTime"
-          pluginConfig:
-          - name: "PodLifeTime"
-            args:
-              maxPodLifeTimeSeconds: 86400 # 24h
-              namespaces:
-                include:
-                - qbittorrent
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/component: qbittorrent
-          plugins:
-            deschedule:
-              enabled:
-                - "PodLifeTime"
     service:
       enabled: true
     serviceMonitor:
