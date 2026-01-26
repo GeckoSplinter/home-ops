@@ -8,5 +8,7 @@ machine:
     net.ipv4.neigh.default.gc_thresh2: "8192" # ARP cache
     net.ipv4.neigh.default.gc_thresh3: "16384" # ARP cache
     net.ipv4.tcp_slow_start_after_idle: "0" # TCP performance
+    net.ipv6.conf.all.disable_ipv6: "1" # Disable IPv6
+    net.ipv6.conf.default.disable_ipv6: "1" # Disable IPv6 on new interfaces
     user.max_user_namespaces: "11255" # User namespaces
     vm.nr_hugepages: "1024" # related to Storage on Talos
