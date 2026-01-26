@@ -6,5 +6,3 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./pvc.yaml
-configurations:
-  - kustomizeconfig.yaml

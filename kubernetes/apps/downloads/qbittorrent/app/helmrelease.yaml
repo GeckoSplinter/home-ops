@@ -38,7 +38,6 @@ spec:
             env:
               DOT: "off"
               DNS_ADDRESS: "10.96.0.10"
-              LOG_LEVEL: debug
               HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: &gluetunAuthPath /gluetun/auth.toml
               VPN_SERVICE_PROVIDER: custom
               VPN_TYPE: wireguard
@@ -47,8 +46,7 @@ spec:
               VPN_PORT_FORWARDING: on
               VPN_PORT_FORWARDING_PROVIDER: protonvpn
               FIREWALL_INPUT_PORTS: 8080
-              FIREWALL_OUTBOUND_SUBNETS: 10.69.0.0/16,10.96.0.0/16,192.168.0.0/16 # Allow access to k8s subnets and local network (NFS)
-              HEALTH_RESTART_VPN: "off" # TEMPORARY DEBUG: Disable VPN restart on healthcheck failure
+              FIREWALL_OUTBOUND_SUBNETS: 10.69.0.0/16,10.96.0.0/16
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
@@ -63,11 +61,10 @@ spec:
               requests:
                 cpu: 50m
                 memory: 128Mi
-                squat.ai/tun: "1"
               limits:
                 cpu: 500m
                 memory: 512Mi
-                squat.ai/tun: "1"
+                devic.es/tun: 1
             securityContext:
               capabilities:
                 add:
@@ -84,7 +81,6 @@ spec:
               TZ: Europe/Paris
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
-              QBT_LOG_LEVEL: debug
             probes:
               liveness:
                 enabled: true
@@ -109,7 +105,7 @@ spec:
                 cpu: 500m
                 memory: 6Gi
               limits:
-                cpu: 4000m
+                cpu: 2
                 memory: 6Gi
             securityContext:
               runAsUser: 2000
