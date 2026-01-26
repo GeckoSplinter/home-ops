@@ -104,10 +104,10 @@ spec:
             resources:
               requests:
                 cpu: 500m
-                memory: 6Gi
+                memory: 8Gi
               limits:
                 cpu: 2
-                memory: 6Gi
+                memory: 8Gi
             securityContext:
               runAsUser: 2000
               runAsGroup: 2000

@@ -55,6 +55,10 @@ spec:
                 excludeOwnerKinds:
                   - Job
                 minPodLifetimeSeconds: 1800
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 5
+                includingInitContainers: true
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:
@@ -62,13 +66,25 @@ spec:
                   - requiredDuringSchedulingIgnoredDuringExecution
             - name: RemovePodsViolatingNodeTaints
             - name: RemovePodsViolatingTopologySpreadConstraint
+            - name: LowNodeUtilization
+              args:
+                thresholds:
+                  cpu: 40
+                  memory: 60
+                  pods: 40
+                targetThresholds:
+                  cpu: 60
+                  memory: 75
+                  pods: 60
           plugins:
             balance:
               enabled:
                 - RemovePodsViolatingTopologySpreadConstraint
+                - LowNodeUtilization
             deschedule:
               enabled:
                 - RemoveFailedPods
+                - RemovePodsHavingTooManyRestarts
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingNodeTaints
