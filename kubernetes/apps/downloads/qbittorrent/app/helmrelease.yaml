@@ -64,7 +64,8 @@ spec:
               limits:
                 cpu: 500m
                 memory: 512Mi
-                devic.es/tun: 1
+                squat.ai/tun: 1
+                # devic.es/tun: 1
             securityContext:
               capabilities:
                 add:
