@@ -6,7 +6,7 @@ metadata:
   name: emqx
 spec:
   # Do not upgrade because of change of licence: https://github.com/emqx/emqx/issues/15226
-  image: public.ecr.aws/emqx/emqx:5.8.6
+  image: public.ecr.aws/emqx/emqx:5.8.9
   config:
     data: |
       authentication {
