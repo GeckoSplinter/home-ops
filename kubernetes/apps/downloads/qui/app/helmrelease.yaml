@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      qui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/autobrr/qui
+              tag: v1.14.1@sha256:10b7945d4f0978f56a7cb939a011e1aeef3b8d500e825f409599ae754f95601b
+            env:
+              QUI__AUTH_DISABLED: "true"
+              QUI__I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA: "true"
+              QUI__AUTH_DISABLED_ALLOWED_CIDRS: 0.0.0.0/0
+              QUI__HOST: 0.0.0.0
+              QUI__PORT: &port 80
+              TZ: Europe/Paris
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+            securityContext:
+              runAsUser: 2000
+              runAsGroup: 2000
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 2000
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: qui
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["qui.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal-envoy
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        enabled: true
+        existingClaim: qui-config
+        advancedMounts:
+          qui:
+            app:
+              - path: /config
+      media:
+        enabled: true
+        type: nfs
+        server: 192.168.42.10
+        path: /mnt/user/Video
+        advancedMounts:
+          qui:
+            app:
+              - path: /media
