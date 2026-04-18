@@ -29,7 +29,7 @@ spec:
           app:
             image:
               repository: ghcr.io/seerr-team/seerr
-              tag: v3.1.0 # renovate: datasource=github-releases depName=seerr-team/seerr
+              tag: v3.2.0 # renovate: datasource=github-releases depName=seerr-team/seerr
             env:
               TZ: Europe/Paris
               LOG_LEVEL: info
