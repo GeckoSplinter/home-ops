@@ -9,6 +9,12 @@ spec:
     - dnsName: "external.${SECRET_DOMAIN}"
       recordType: CNAME
       targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+    - dnsName: "*.${SECRET_DOMAIN}"
+      recordType: CNAME
+      targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
     - dnsName: "external.${SECRET_DOMAIN_WEB_CABINET}"
+      recordType: CNAME
+      targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+    - dnsName: "*.${SECRET_DOMAIN_WEB_CABINET}"
       recordType: CNAME
       targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]

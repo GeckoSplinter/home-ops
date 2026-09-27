@@ -5,10 +5,6 @@ kind: Gateway
 metadata:
   name: external-envoy
   namespace: network
-  annotations:
-    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-  labels:
-    external-dns: enabled
 spec:
   gatewayClassName: envoy-gateway
   addresses:
@@ -17,7 +13,6 @@ spec:
   infrastructure:
     annotations:
       lbipam.cilium.io/ips: "192.168.42.81"
-      external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
   listeners:
     - name: http
       protocol: HTTP
