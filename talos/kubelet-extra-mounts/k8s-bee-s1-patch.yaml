@@ -1,0 +1,34 @@
+apiVersion: v1alpha1
+kind: KubeletConfig
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete
+---
+machine:
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:v1.36.5
+    extraMounts:
+      - destination: /var/mnt/ssd-800
+        type: bind
+        source: /var/mnt/ssd-800
+        options: [bind, rshared, rw]
+      - destination: /var/openebs/local
+        type: bind
+        source: /var/openebs/local
+        options: [bind, rshared, rw]
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options: [bind, rshared, rw]
+    extraConfig:
+      crashLoopBackOff:
+        maxContainerRestartPeriod: 60s
+      imageMaximumGCAge: 168h
+      maxParallelImagePulls: 3
+      serializeImagePulls: false
+      shutdownGracePeriod: 90s
+      shutdownGracePeriodCriticalPods: 60s
