@@ -16,9 +16,8 @@ metadata:
   name: l2-policy
 spec:
   loadBalancerIPs: true
-  # bond0 added for nodes migrated to the topf-managed bond network config;
-  # enp+ stays for nodes still on the pre-migration raw NIC name.
-  interfaces: ["^enp.*", "^bond.*"]
+  # All 3 nodes use the topf-managed bond0 network config.
+  interfaces: ["^bond.*"]
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
