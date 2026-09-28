@@ -1,0 +1,11 @@
+machine:
+  certSANs:
+    - "192.168.42.32"
+    - "127.0.0.1" # KubePrism
+    - "kube-api.home.gecko.ninja"
+    - "k8s.gecko.ninja"
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+podSubnets: ["10.69.0.0/16"]
+serviceSubnets: ["10.96.0.0/16"]

@@ -1,0 +1,56 @@
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+    advertisedSubnets:
+      - 192.168.42.32/24
+---
+# Allow scheduling on control-plane nodes. A plain field *set* (not a
+# $patch: delete on taints.node-role.kubernetes.io/control-plane), because
+# this cluster's live config predates the taint existing at all (it was
+# provisioned with the legacy cluster.allowSchedulingOnControlPlanes field,
+# which the Talos 1.14 contract no longer accepts alongside typed
+# KubeAPIServerConfig/KubeControllerManagerConfig/etc — see
+# siderolabs/talos "already set in v1alpha1 config" for the 1.14 contract).
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+taints: {}
+---
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: PodSecurity
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+certExtraSANs:
+  - "192.168.42.32"
+  - "127.0.0.1"
+  - "kube-api.home.gecko.ninja"
+  - "k8s.gecko.ninja"
+extraArgs:
+  # https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
+  enable-aggregator-routing: "true"
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+enabled: false
+---
+# Disable built-in CNI and kube-proxy to use Cilium
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0

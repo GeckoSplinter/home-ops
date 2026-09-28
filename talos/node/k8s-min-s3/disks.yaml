@@ -1,3 +1,6 @@
+# Declared (not omitted) even though topf apply currently rejects the
+# .machine.kubelet field on this node — see talos/all/30-kubelet.yaml and
+# talos/kubelet-extra-mounts/README.md for why.
 machine:
   kubelet:
     extraMounts:
@@ -12,7 +15,6 @@ machine:
   disks:
       # Selected by stable by-id path, not /dev/sda: device node names
       # aren't guaranteed stable across reboots.
-      - device: /dev/disk/by-id/wwn-0x55cd2e404b6e9ec4
+      - device: /dev/disk/by-id/wwn-0x55cd2e404b6e8d75
         partitions:
           - mountpoint: /var/mnt/ssd-800
-

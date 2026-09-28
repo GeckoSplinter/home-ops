@@ -1,0 +1,53 @@
+---
+clusterName: home-ops
+clusterEndpoint: https://192.168.42.32:6443
+
+# renovate: datasource=github-releases depName=siderolabs/talos
+talosVersion: v1.14.1
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+# Not 1.37 yet: 1.36 is the target for this cutover, one minor at a time.
+kubernetesVersion: v1.36.5
+
+secretsPath: secrets.sops.yaml
+
+nodes:
+  - host: "k8s-bee-s1"
+    ip: "192.168.42.33"
+    role: control-plane
+    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    data:
+      # By-id path, not /dev/nvme0n1: NVMe device names aren't stable across
+      # reboots (kernel/driver enumeration order can reassign them).
+      installDisk: "/dev/disk/by-id/nvme-CT500P3PSSD8_2251E69538D8"
+      installDiskSerial: ""
+      macAddr: "b0:41:6f:0a:b5:09"
+      mtu: 1500
+      encryptDisk: false
+      kernelModules: []
+  - host: "k8s-bee-s2"
+    ip: "192.168.42.34"
+    role: control-plane
+    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    data:
+      # By-id path, not /dev/nvme0n1: this host's two NVMe drives were
+      # previously mismapped after a reboot changed enumeration order. This
+      # is the 500GB Crucial that actually holds the boot/system partitions.
+      installDisk: "/dev/disk/by-id/nvme-CT500P3PSSD8_241147842B6F"
+      installDiskSerial: ""
+      macAddr: "b0:41:6f:13:98:91"
+      mtu: 1500
+      encryptDisk: false
+      kernelModules: []
+  - host: "k8s-min-s3"
+    ip: "192.168.42.35"
+    role: control-plane
+    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    data:
+      # By-id path, not /dev/nvme0n1: NVMe device names aren't stable across
+      # reboots (kernel/driver enumeration order can reassign them).
+      installDisk: "/dev/disk/by-id/nvme-KINGSTON_OM8PDP3512B-A01_50026B7685BA809E"
+      installDiskSerial: ""
+      macAddr: "1c:83:41:29:c2:02"
+      mtu: 1500
+      encryptDisk: false
+      kernelModules: []

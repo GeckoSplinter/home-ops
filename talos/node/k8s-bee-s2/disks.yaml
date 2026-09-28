@@ -1,14 +1,4 @@
 machine:
-  kubelet:
-    extraMounts:
-      - destination: /var/mnt/nvme-2000
-        type: bind
-        source: /var/mnt/nvme-2000
-        options:
-          - bind
-          - rshared
-          - rw
-
   disks:
       # Selected by stable by-id path (2TB Lexar, serial NDH562R005956P1112),
       # not /dev/nvme1n1: NVMe device node names aren't stable across
@@ -17,4 +7,3 @@ machine:
       - device: /dev/disk/by-id/nvme-eui.0000000623032562caf25b032b000100
         partitions:
           - mountpoint: /var/mnt/nvme-2000
-

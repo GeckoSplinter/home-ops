@@ -1,18 +1,7 @@
 machine:
-  kubelet:
-    extraMounts:
-      - destination: /var/mnt/ssd-800
-        type: bind
-        source: /var/mnt/ssd-800
-        options:
-          - bind
-          - rshared
-          - rw
-
   disks:
       # Selected by stable by-id path, not /dev/sda: device node names
       # aren't guaranteed stable across reboots.
       - device: /dev/disk/by-id/wwn-0x55cd2e404b6e9ec4
         partitions:
           - mountpoint: /var/mnt/ssd-800
-

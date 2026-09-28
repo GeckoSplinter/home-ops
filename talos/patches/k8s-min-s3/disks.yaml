@@ -10,7 +10,9 @@ machine:
           - rw
 
   disks:
-      - device: /dev/sda
+      # Selected by stable by-id path, not /dev/sda: device node names
+      # aren't guaranteed stable across reboots.
+      - device: /dev/disk/by-id/wwn-0x55cd2e404b6e8d75
         partitions:
           - mountpoint: /var/mnt/ssd-800
 

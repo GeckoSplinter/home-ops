@@ -1,0 +1,24 @@
+# Reference only — already live, not applied by anything. See README.md.
+machine:
+  kubelet:
+    extraConfig:
+      crashLoopBackOff:
+        maxContainerRestartPeriod: 60s
+      imageMaximumGCAge: 168h
+      maxParallelImagePulls: 3
+      serializeImagePulls: false
+      shutdownGracePeriod: 90s
+      shutdownGracePeriodCriticalPods: 60s
+    extraMounts:
+      - destination: /var/mnt/nvme-2000
+        type: bind
+        source: /var/mnt/nvme-2000
+        options: [bind, rshared, rw]
+      - destination: /var/openebs/local
+        type: bind
+        source: /var/openebs/local
+        options: [bind, rshared, rw]
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options: [bind, rshared, rw]

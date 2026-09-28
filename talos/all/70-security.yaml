@@ -1,0 +1,7 @@
+# Talos 1.14 defaults to running kubelet and pods in a sandboxed PID/mount
+# namespace, which breaks workloads that rely on hostPID or host mounts
+# (node-exporter, csi-driver-nfs, generic-device-plugin, openebs, longhorn).
+# Kept disabled to preserve current (pre-1.14) behavior for these workloads.
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: false

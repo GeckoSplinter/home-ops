@@ -29,7 +29,9 @@ spec:
     cluster:
       id: 1
       name: "home-ops"
-    devices: enp+
+    # bond+ added for nodes migrated to the topf-managed bond0 network
+    # config; enp+ stays for nodes still on the pre-migration raw NIC name.
+    devices: "enp+ bond+"
     dashboards:
       enabled: true
     endpointRoutes:
