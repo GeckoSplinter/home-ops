@@ -1,3 +1,5 @@
+min_version = "2026.7.0"
+
 [env]
 _.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = "{{config_root}}/kubeconfig"
@@ -30,3 +32,6 @@ TALOS_DIR = "{{config_root}}/talos"
 "aqua:siderolabs/talos" = "1.14.1"
 "aqua:yannh/kubeconform" = "0.8.0"
 "github:postfinance/topf" = "0.6.0"
+
+[settings]
+lockfile_platforms = ["linux-x64", "linux-arm64", "macos-arm64", "macos-x64"]
