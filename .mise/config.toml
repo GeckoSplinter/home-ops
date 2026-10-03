@@ -31,7 +31,7 @@ TALOS_DIR = "{{config_root}}/talos"
 "aqua:mikefarah/yq" = "4.53.6"
 "aqua:siderolabs/talos" = "1.14.1"
 "aqua:yannh/kubeconform" = "0.8.0"
-"github:postfinance/topf" = "0.6.0"
+"github:postfinance/topf" = "0.6.1"
 
 [settings]
 lockfile_platforms = ["linux-x64", "linux-arm64", "macos-arm64", "macos-x64"]
