@@ -3,7 +3,7 @@ clusterName: home-ops
 clusterEndpoint: https://192.168.42.32:6443
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.14.1
+talosVersion: v1.14.2
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 # Not 1.37 yet: 1.36 is the target for this cutover, one minor at a time.
 kubernetesVersion: v1.36.5
