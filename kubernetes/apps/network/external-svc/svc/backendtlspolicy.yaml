@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homelab-ca
+  namespace: network
+data:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIBsTCCAVigAwIBAgIUVppq0wzraLEwNiU0Q3V7azsdY9IwCgYIKoZIzj0EAwIw
+    NzEUMBIGA1UECgwLZ2Vja28ubmluamExHzAdBgNVBAMMFmdlY2tvLm5pbmphIEhv
+    bWVsYWIgQ0EwHhcNMjYxMDA0MjA1MDUyWhcNNDYwOTI5MjA1MDUyWjA3MRQwEgYD
+    VQQKDAtnZWNrby5uaW5qYTEfMB0GA1UEAwwWZ2Vja28ubmluamEgSG9tZWxhYiBD
+    QTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJlPnJRUSMVSapmaSeb23kROCR3r
+    JYnqkdQwAMaUVBJXqL9gl/qk8X9dgcaIt2YZVlTWs3nntmLmwTZiV/KMR3ajQjBA
+    MB0GA1UdDgQWBBQu+ESKLI2J4Q+Ntf/vonRGhtQWCjAPBgNVHRMBAf8EBTADAQH/
+    MA4GA1UdDwEB/wQEAwIBBjAKBggqhkjOPQQDAgNHADBEAiAaWfn9Vh7TjAFe8mvo
+    BjIRFzI92AGM3dA4Tbvc/ifigAIgDNLKAUUiXLqsOh+1Ljbn6eFSNH3LxuLjdrVd
+    /tgIMkI=
+    -----END CERTIFICATE-----
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/backendtlspolicy_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: pihole-backend-tls
+  namespace: network
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: pihole
+  validation:
+    caCertificateRefs:
+      - group: ""
+        kind: ConfigMap
+        name: homelab-ca
+    hostname: pihole.${SECRET_DOMAIN}

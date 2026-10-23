@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nas-backend
+  namespace: network
+spec:
+  secretName: nas-backend-tls
+  issuerRef:
+    name: homelab-ca
+    kind: ClusterIssuer
+  commonName: nas.${SECRET_DOMAIN}
+  dnsNames:
+    - "nas.${SECRET_DOMAIN}"
+    - "naboo.${SECRET_DOMAIN}"
+  duration: 43800h # 5y, installed manually on the device
+  renewBefore: 8760h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Never
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pihole-backend
+  namespace: network
+spec:
+  secretName: pihole-backend-tls
+  issuerRef:
+    name: homelab-ca
+    kind: ClusterIssuer
+  commonName: pihole.${SECRET_DOMAIN}
+  dnsNames:
+    - "pihole.${SECRET_DOMAIN}"
+  ipAddresses:
+    - "192.168.42.3"
+  duration: 43800h # 5y, installed manually on the device
+  renewBefore: 8760h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Never
