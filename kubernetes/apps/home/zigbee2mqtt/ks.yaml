@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: mosquitto
+      namespace: databases
   path: ./kubernetes/apps/home/zigbee2mqtt/app
   prune: false
   postBuild:
