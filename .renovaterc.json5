@@ -90,6 +90,13 @@
       "separateMinorPatch": true
     },
     {
+      description: "Auto-merge all patch updates with passing checks",
+      matchUpdateTypes: ["patch"],
+      automerge: true,
+      automergeType: "pr",
+      minimumReleaseAge: "2 days",
+    },
+    {
       description: "Auto-merge Docker container patch updates with passing checks",
       matchDatasources: ["docker"],
       automerge: true,
