@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/common
-resources:
-  - ./echo-server/ks.yaml
+resources: []
