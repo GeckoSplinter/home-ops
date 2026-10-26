@@ -25,10 +25,9 @@ This is a Kubernetes home operations repository using Talos Linux as the OS, Flu
 ## Repository Structure
 
 - `talos/`: Talos Linux configuration
-  - `talconfig.yaml`: Main Talos cluster configuration
-  - `talenv.yaml`: Talos and Kubernetes versions
-  - `patches/`: Node-specific and global Talos patches
-  - `clusterconfig/`: Generated Talos configs (not committed)
+  - `topf.yaml`: Main Talos cluster configuration, including Talos and Kubernetes versions
+  - `all/`, `control-plane/`, `node/<hostname>/`: topf patches, merged in that order
+  - `mod.just`: Day-2 recipes wrapping topf
 - `kubernetes/`: Kubernetes manifests
   - `apps/`: Application deployments organized by namespace
   - `bootstrap/`: Initial Helm releases (Cilium, CoreDNS, Cert-Manager, Flux)
@@ -46,8 +45,8 @@ This is a Kubernetes home operations repository using Talos Linux as the OS, Flu
 # Force Flux to reconcile from Git
 task reconcile
 
-# Generate Talos configuration from talconfig.yaml
-task talos:generate-config
+# Render Talos configuration from topf.yaml
+just talos render
 
 # Apply Talos config to a specific node
 task talos:apply-node IP=192.168.42.33
@@ -143,7 +142,7 @@ chartRef:
 ### Bootstrap Process
 
 1. Talos is bootstrapped first using `task bootstrap:talos`
-   - Generates machine configs from `talconfig.yaml`
+   - Generates machine configs from `topf.yaml`
    - Applies configs to nodes
    - Bootstraps etcd on first controller
    - Generates kubeconfig
@@ -160,8 +159,7 @@ chartRef:
 ## Important Configuration Files
 
 - `config.yaml`: Central configuration for cluster setup (node IPs, VIPs, domain, Cloudflare)
-- `talconfig.yaml`: Talos cluster configuration
-- `talenv.yaml`: Talos and Kubernetes versions for upgrades
+- `talos/topf.yaml`: Talos cluster configuration and Talos/Kubernetes versions
 - `.renovaterc.json5`: Renovate bot configuration for automated updates
   - Auto-merges patch updates for Docker, Helm, GitHub releases, and Actions
   - Custom regex managers for annotated dependencies in YAML
@@ -169,15 +167,14 @@ chartRef:
 
 ## Talos Configuration
 
-The cluster uses `talhelper` to template Talos configurations. Key points:
+The cluster uses `topf` to assemble Talos machine configs. Key points:
 
 - 3 controller nodes (no separate worker nodes): k8s-bee-s1, k8s-bee-s2, k8s-min-s3
 - Static IP addressing (192.168.42.33-35) with VIP for kube-apiserver (192.168.42.32)
 - Cilium CNI (Flannel disabled via `cniConfig.name: none`)
-- Global patches applied to all nodes (in `talos/patches/`)
-- Per-node patches for disk configuration (in `talos/patches/<node-name>/`)
-- Machine configs generated from `talconfig.yaml` + `talenv.yaml`
-- Talos and Kubernetes versions are managed in `talenv.yaml` (renovate-tracked)
+- Patches applied to all nodes (`talos/all/`), control planes (`talos/control-plane/`) and per node (`talos/node/<node-name>/`)
+- Machine configs rendered from `talos/topf.yaml` plus those patches
+- Talos and Kubernetes versions are managed in `talos/topf.yaml` (renovate-tracked)
 - Factory images from factory.talos.dev with custom schematics per node
 
 ## Flux Configuration
