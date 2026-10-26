@@ -34,7 +34,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - cp /secret/passwd /passwd/passwd && mosquitto_passwd -U /passwd/passwd
+              - cp /secret/passwd /passwd/passwd && chmod 0700 /passwd/passwd && mosquitto_passwd -U /passwd/passwd
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -106,6 +106,12 @@ spec:
           mosquitto:
             hash-passwords:
               - path: /secret
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          mosquitto:
+            hash-passwords:
+              - path: /tmp
       passwd:
         type: emptyDir
         advancedMounts:
