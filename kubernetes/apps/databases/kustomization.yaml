@@ -7,4 +7,3 @@ components:
   - ../../components/common
 resources:
   - ./influxdb/ks.yaml
-  - ./emqx/ks.yaml
