@@ -62,7 +62,7 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 8Gi
-                # amd.com/gpu: 1
+                # squat.ai/dri: 1
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
