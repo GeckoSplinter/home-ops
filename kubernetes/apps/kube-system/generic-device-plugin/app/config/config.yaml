@@ -5,3 +5,7 @@ devices:
       - count: 1000
         paths:
           - path: /dev/net/tun
+  - name: dri
+    groups:
+      - paths:
+          - path: /dev/dri/renderD128

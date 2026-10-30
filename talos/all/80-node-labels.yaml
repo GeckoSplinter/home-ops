@@ -1,0 +1,6 @@
+# All three nodes have an AMD Vega iGPU (Lucienne, Cezanne, Renoir). The
+# amdgpu driver comes from the siderolabs/amdgpu extension in the schematic.
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  gpu/amd: "true"

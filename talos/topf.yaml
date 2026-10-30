@@ -13,7 +13,7 @@ nodes:
   - host: "k8s-bee-s1"
     ip: "192.168.42.33"
     role: control-plane
-    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    schematicId: "3a33ec6dfc8cfd61d2a3db3caf97894f31e913952d71ce3c3fbbe565a3f08339"
     data:
       # By-id path, not /dev/nvme0n1: NVMe device names aren't stable across
       # reboots (kernel/driver enumeration order can reassign them).
@@ -26,7 +26,7 @@ nodes:
   - host: "k8s-bee-s2"
     ip: "192.168.42.34"
     role: control-plane
-    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    schematicId: "3a33ec6dfc8cfd61d2a3db3caf97894f31e913952d71ce3c3fbbe565a3f08339"
     data:
       # By-id path, not /dev/nvme0n1: this host's two NVMe drives were
       # previously mismapped after a reboot changed enumeration order. This
@@ -40,7 +40,7 @@ nodes:
   - host: "k8s-min-s3"
     ip: "192.168.42.35"
     role: control-plane
-    schematicId: "613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245"
+    schematicId: "3a33ec6dfc8cfd61d2a3db3caf97894f31e913952d71ce3c3fbbe565a3f08339"
     data:
       # By-id path, not /dev/nvme0n1: NVMe device names aren't stable across
       # reboots (kernel/driver enumeration order can reassign them).
