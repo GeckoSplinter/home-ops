@@ -7,6 +7,7 @@ components:
   - ../../components/common
 resources:
   - ./home-assistant/ks.yaml
+  - ./home-assistant-mcp/ks.yaml
   - ./mosquitto/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   # - ./node-red/ks.yaml
