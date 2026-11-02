@@ -5,16 +5,14 @@ cluster:
     advertisedSubnets:
       - 192.168.42.32/24
 ---
-# Allow scheduling on control-plane nodes. A plain field *set* (not a
-# $patch: delete on taints.node-role.kubernetes.io/control-plane), because
-# this cluster's live config predates the taint existing at all (it was
-# provisioned with the legacy cluster.allowSchedulingOnControlPlanes field,
-# which the Talos 1.14 contract no longer accepts alongside typed
-# KubeAPIServerConfig/KubeControllerManagerConfig/etc — see
-# siderolabs/talos "already set in v1alpha1 config" for the 1.14 contract).
+# Allow scheduling on control-plane nodes (3 nodes, no workers): drop the
+# default NoSchedule taint that Talos 1.14 renders into KubeNodeConfig.
+# https://docs.siderolabs.com/talos/v1.14/deploy-and-manage-workloads/workloads-on-controlplane
 apiVersion: v1alpha1
 kind: KubeNodeConfig
-taints: {}
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete
 ---
 apiVersion: v1alpha1
 kind: KubeAdmissionControlConfig
