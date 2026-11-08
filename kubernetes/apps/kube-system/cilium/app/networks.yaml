@@ -16,6 +16,8 @@ metadata:
   name: l2-policy
 spec:
   loadBalancerIPs: true
+  # Envoy Gateway copies Gateway.spec.addresses into Service.spec.externalIPs
+  externalIPs: true
   # All 3 nodes use the topf-managed bond0 network config.
   interfaces: ["^bond.*"]
   nodeSelector:
@@ -33,7 +35,7 @@ spec:
   advertisements:
     - advertisementType: Service
       service:
-        addresses: ["LoadBalancerIP"]
+        addresses: ["LoadBalancerIP", "ExternalIP"]
       selector:
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
