@@ -8,6 +8,7 @@ components:
 resources:
   - ./app-arr-secret.sops.yaml
   - ./seerr/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
