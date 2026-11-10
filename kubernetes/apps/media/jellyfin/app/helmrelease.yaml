@@ -96,6 +96,8 @@ spec:
         existingClaim: jellyfin-config
       cache:
         type: emptyDir
+        # transcodes and resized images; cap it so a stuck transcode can't fill the node disk
+        sizeLimit: 50Gi
         globalMounts:
           - path: /cache
       tmp:
