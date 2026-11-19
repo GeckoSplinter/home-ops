@@ -5,3 +5,15 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: internet-traffic-dashboard
+    files:
+      - internet-traffic.json=./dashboards/internet-traffic.json
+    options:
+      labels:
+        grafana_dashboard: "true"
+      annotations:
+        grafana_folder: Network
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true
