@@ -834,7 +834,7 @@
       "gridPos": {
         "x": 0,
         "y": 22,
-        "w": 16,
+        "w": 12,
         "h": 10
       },
       "targets": [
@@ -843,7 +843,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min((max(rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m]))) or vector(0))) * 8, 0)",
+          "expr": "max(rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * (1 - ((sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) / clamp_min((sum(max by (name) (rate(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) + (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)), 1))) * 8",
           "legendFormat": "IPv4 download",
           "refId": "A"
         },
@@ -852,7 +852,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "(sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m]))) or vector(0)) * 8",
+          "expr": "max(rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * ((sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) / clamp_min((sum(max by (name) (rate(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) + (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)), 1)) * 8",
           "legendFormat": "IPv6 download",
           "refId": "B"
         },
@@ -861,7 +861,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min((max(rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m]))) or vector(0))) * 8, 0)",
+          "expr": "max(rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * (1 - ((sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) / clamp_min((sum(max by (name) (rate(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) + (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)), 1))) * 8",
           "legendFormat": "IPv4 upload",
           "refId": "C"
         },
@@ -870,7 +870,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "(sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m]))) or vector(0)) * 8",
+          "expr": "max(rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * ((sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) / clamp_min((sum(max by (name) (rate(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) + (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)), 1)) * 8",
           "legendFormat": "IPv6 upload",
           "refId": "D"
         }
@@ -991,20 +991,20 @@
           "sort": "none"
         }
       },
-      "description": "Download above the axis, upload below, stacked by IP version (5m average). IPv6 is measured by /ipv6 firewall accounting rules on the WAN; IPv4 is the WAN interface total minus IPv6 (includes a few % of L2 overhead)."
+      "description": "Download above the axis, upload below, stacked by IP version (5m average). Split estimated from the router's FastTrack byte counters for IPv4 and IPv6 (no router change needed): their ratio is applied to the WAN totals. Download/upload use the same ratio, and inter-VLAN routed traffic is included in the counters."
     },
     {
       "id": 13,
-      "type": "piechart",
-      "title": "Traffic by IP version (range)",
+      "type": "timeseries",
+      "title": "IPv6 share of traffic",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "gridPos": {
-        "x": 16,
+        "x": 12,
         "y": 22,
-        "w": 8,
+        "w": 6,
         "h": 10
       },
       "targets": [
@@ -1013,7 +1013,62 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min(sum(increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])) + sum(increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])) - (sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[$__range])) or vector(0)) - (sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[$__range])) or vector(0)), 0)",
+          "expr": "((sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) / clamp_min((sum(max by (name) (rate(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)) + (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[5m]))) or vector(0)), 1)) * 100",
+          "legendFormat": "IPv6 share",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 1,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 20,
+            "showPoints": "never",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "description": "Percentage of routed traffic carried over IPv6 (5m average). Split estimated from the router's FastTrack byte counters for IPv4 and IPv6 (no router change needed): their ratio is applied to the WAN totals. Download/upload use the same ratio, and inter-VLAN routed traffic is included in the counters."
+    },
+    {
+      "id": 14,
+      "type": "piechart",
+      "title": "Traffic by IP version (range)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 22,
+        "w": 6,
+        "h": 10
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "(sum(increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])) + sum(increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range]))) * (1 - ((sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)) / clamp_min((sum(increase(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)) + (sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)), 1)))",
           "legendFormat": "IPv4",
           "refId": "A",
           "instant": true,
@@ -1024,7 +1079,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "(sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[$__range])) or vector(0)) + (sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[$__range])) or vector(0))",
+          "expr": "(sum(increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])) + sum(increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range]))) * ((sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)) / clamp_min((sum(increase(mktxp_firewall_filter_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)) + (sum(increase(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*fasttrack-connection.*\"}[$__range])) or vector(0)), 1))",
           "legendFormat": "IPv6",
           "refId": "B",
           "instant": true,
@@ -1086,7 +1141,7 @@
         ],
         "legend": {
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "values": [
             "value",
             "percent"
@@ -1096,7 +1151,7 @@
           "mode": "single"
         }
       },
-      "description": "Download + upload volume over the selected time range. IPv6 is measured by /ipv6 firewall accounting rules on the WAN; IPv4 is the WAN interface total minus IPv6 (includes a few % of L2 overhead)."
+      "description": "Download + upload volume over the selected time range. Split estimated from the router's FastTrack byte counters for IPv4 and IPv6 (no router change needed): their ratio is applied to the WAN totals. Download/upload use the same ratio, and inter-VLAN routed traffic is included in the counters."
     }
   ]
 }
