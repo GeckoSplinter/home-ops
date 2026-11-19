@@ -62,7 +62,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "irate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[3m]) * 8",
+          "expr": "max by (name) (irate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[3m])) * 8",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -123,7 +123,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "irate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[3m]) * 8",
+          "expr": "max by (name) (irate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[3m])) * 8",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -184,7 +184,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])",
+          "expr": "sum by (name) (increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range]))",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -247,7 +247,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range])",
+          "expr": "sum by (name) (increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[$__range]))",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -310,7 +310,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "mktxp_public_ip_address_info{routerboard_name=\"gateway\"}",
+          "expr": "max by (public_address, public_address_ipv6) (mktxp_public_ip_address_info{routerboard_name=\"gateway\"})",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -324,6 +324,7 @@
             "mode": "fixed",
             "fixedColor": "text"
           },
+          "noValue": "n/a (enable /ip cloud DDNS)",
           "mappings": [
             {
               "type": "special",
@@ -376,7 +377,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "mktxp_public_ip_address_info{routerboard_name=\"gateway\"}",
+          "expr": "max by (public_address, public_address_ipv6) (mktxp_public_ip_address_info{routerboard_name=\"gateway\"})",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -390,6 +391,7 @@
             "mode": "fixed",
             "fixedColor": "text"
           },
+          "noValue": "n/a (enable /ip cloud DDNS)",
           "mappings": [
             {
               "type": "special",
@@ -442,7 +444,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "mktxp_interface_running{routerboard_name=\"gateway\", name=\"$wan\"}",
+          "expr": "max by (name) (mktxp_interface_running{routerboard_name=\"gateway\", name=\"$wan\"})",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -519,7 +521,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]) * 8",
+          "expr": "max by (name) (rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * 8",
           "legendFormat": "Download",
           "refId": "A"
         },
@@ -528,7 +530,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]) * 8",
+          "expr": "max by (name) (rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) * 8",
           "legendFormat": "Upload",
           "refId": "B"
         }
@@ -621,7 +623,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[1d])",
+          "expr": "sum by (name) (increase(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[1d] offset -1d))",
           "legendFormat": "Download",
           "refId": "A",
           "interval": "1d"
@@ -631,7 +633,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[1d])",
+          "expr": "sum by (name) (increase(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[1d] offset -1d))",
           "legendFormat": "Upload",
           "refId": "B",
           "interval": "1d"
@@ -691,7 +693,8 @@
           "mode": "multi"
         }
       },
-      "description": "Volume transferred on the WAN per day (best with a 7d+ time range)"
+      "description": "Volume transferred on the WAN per day (best with a 7d+ time range)",
+      "timeFrom": "7d"
     },
     {
       "id": 10,
@@ -713,7 +716,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "mktxp_ip_connections_total{routerboard_name=\"gateway\"}",
+          "expr": "max(mktxp_ip_connections_total{routerboard_name=\"gateway\"})",
           "legendFormat": "Tracked connections",
           "refId": "A"
         }
@@ -764,7 +767,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_rx_error_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])",
+          "expr": "max by (name) (rate(mktxp_interface_rx_error_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]))",
           "legendFormat": "rx errors",
           "refId": "A"
         },
@@ -773,7 +776,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_rx_drop_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])",
+          "expr": "max by (name) (rate(mktxp_interface_rx_drop_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]))",
           "legendFormat": "rx drops",
           "refId": "B"
         },
@@ -782,7 +785,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_tx_error_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])",
+          "expr": "max by (name) (rate(mktxp_interface_tx_error_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]))",
           "legendFormat": "tx errors",
           "refId": "C"
         },
@@ -791,7 +794,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(mktxp_interface_tx_drop_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])",
+          "expr": "max by (name) (rate(mktxp_interface_tx_drop_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m]))",
           "legendFormat": "tx drops",
           "refId": "D"
         }
@@ -840,7 +843,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min((sum(rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m])) or vector(0))) * 8, 0)",
+          "expr": "clamp_min((max(rate(mktxp_interface_rx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m]))) or vector(0))) * 8, 0)",
           "legendFormat": "IPv4 download",
           "refId": "A"
         },
@@ -849,7 +852,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "(sum(rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m])) or vector(0)) * 8",
+          "expr": "(sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 download.*\"}[5m]))) or vector(0)) * 8",
           "legendFormat": "IPv6 download",
           "refId": "B"
         },
@@ -858,7 +861,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min((sum(rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m])) or vector(0))) * 8, 0)",
+          "expr": "clamp_min((max(rate(mktxp_interface_tx_byte_total{routerboard_name=\"gateway\", name=\"$wan\"}[5m])) - (sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m]))) or vector(0))) * 8, 0)",
           "legendFormat": "IPv4 upload",
           "refId": "C"
         },
@@ -867,7 +870,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "(sum(rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m])) or vector(0)) * 8",
+          "expr": "(sum(max by (name) (rate(mktxp_firewall_filter_ipv6_total{routerboard_name=\"gateway\", name=~\".*acct wan6 upload.*\"}[5m]))) or vector(0)) * 8",
           "legendFormat": "IPv6 upload",
           "refId": "D"
         }
