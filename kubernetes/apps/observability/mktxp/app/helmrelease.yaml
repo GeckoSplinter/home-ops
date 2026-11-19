@@ -20,6 +20,7 @@ spec:
   values:
     controllers:
       mktxp:
+        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -64,6 +65,13 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 30s
+            # Keep series stable across pod restarts (metrics describe the router, not the pod)
+            relabelings:
+              - action: replace
+                targetLabel: instance
+                replacement: gateway
+              - action: labeldrop
+                regex: pod
     persistence:
       config:
         type: secret
