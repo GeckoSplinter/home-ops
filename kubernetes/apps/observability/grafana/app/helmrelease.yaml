@@ -143,6 +143,12 @@ spec:
           gnetId: 16888
           revision: 9
           datasource: Prometheus
+        mikrotik:
+          # renovate: depName="Mikrotik MKTXP Exporter"
+          gnetId: 13679
+          revision: 32
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
