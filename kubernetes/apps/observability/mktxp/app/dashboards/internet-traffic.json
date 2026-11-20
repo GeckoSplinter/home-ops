@@ -360,7 +360,7 @@
     {
       "id": 6,
       "type": "stat",
-      "title": "Public IPv6",
+      "title": "Public IPv6 prefix",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -377,7 +377,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max by (public_address, public_address_ipv6) (mktxp_public_ip_address_info{routerboard_name=\"gateway\"})",
+          "expr": "max by (address) (mktxp_firewall_address_list_ipv6{routerboard_name=\"gateway\", list=\"public-ipv6\", comment=\"dhcpv6-pd\"})",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -391,19 +391,7 @@
             "mode": "fixed",
             "fixedColor": "text"
           },
-          "noValue": "n/a (enable /ip cloud DDNS)",
-          "mappings": [
-            {
-              "type": "special",
-              "options": {
-                "match": "empty",
-                "result": {
-                  "text": "n/a (enable /ip cloud DDNS)",
-                  "index": 0
-                }
-              }
-            }
-          ]
+          "noValue": "n/a (DHCPv6 script not set)"
         },
         "overrides": []
       },
@@ -412,7 +400,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^public_address_ipv6$/",
+          "fields": "/^address$/",
           "values": false
         },
         "colorMode": "none",
@@ -422,7 +410,8 @@
         "text": {
           "valueSize": 18
         }
-      }
+      },
+      "description": "IPv6 prefix delegated by the ISP via DHCPv6, copied by the router's DHCPv6 client script into the 'public-ipv6' address list"
     },
     {
       "id": 7,
